@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Driverbot: a WhatsApp assistant for a van fleet</title>
+<meta name="description" content="Driverbot checks vans, reads delivery notes and follows a fleet with GPS. It works in WhatsApp. A project by Murtaza.">
+<meta property="og:title" content="Driverbot: a WhatsApp assistant for a van fleet">
+<meta property="og:description" content="The bot checks vans, reads delivery notes and follows a fleet with GPS. Try a driver's day on the page.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#E8EDF0">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'%3E%3Crect width='28' height='28' rx='6' fill='%2317212B'/%3E%3Crect x='4' y='8' width='12' height='9' rx='1.5' fill='none' stroke='%23fff' stroke-width='2'/%3E%3Cpath d='M16 11h4l3 4v2h-7z' fill='none' stroke='%23fff' stroke-width='2' stroke-linejoin='round'/%3E%3Ccircle cx='9' cy='19.5' r='2.2' fill='%23FF6A13'/%3E%3Ccircle cx='19.5' cy='19.5' r='2.2' fill='%23FF6A13'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper: #E8EDF0;
+  --paper-2: #F5F7F8;
+  --ink: #17212B;
+  --ink-2: #4A5866;
+  --rule: #C3CDD4;
+  --hivis: #FF6A13;
+  --pen: #2A55E8;
+  --stamp: #C2342C;
+  --asphalt: #1E2428;
+  --asphalt-2: #2A3137;
+  --lane: #F2C230;
+  --ok: #1F8A5B;
+  --display: "Archivo", "Arial Narrow", Arial, sans-serif;
+  --serif: "Source Serif 4", Georgia, serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  --ease: cubic-bezier(.2, .8, .2, 1);
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--serif); font-size: 19px; line-height: 1.62; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+a { color: inherit; }
+button { font: inherit; }
+:focus-visible { outline: 3px solid var(--pen); outline-offset: 3px; border-radius: 4px; }
+.road :focus-visible { outline-color: var(--lane); }
+.wrap { width: min(1180px, 100% - 48px); margin-inline: auto; }
+section { padding: 104px 0; scroll-margin-top: 64px; }
+h2 { font-family: var(--display); font-weight: 800; font-stretch: 112%; font-size: clamp(32px, 4.2vw, 56px); line-height: 1; letter-spacing: -.015em; margin: 0 0 22px; text-wrap: balance; }
+h3 { font-family: var(--display); font-weight: 700; font-size: 21px; line-height: 1.25; margin: 0 0 8px; }
+.measure { max-width: 34em; }
+
+/* ---------- progress + header ---------- */
+.progress { position: fixed; top: 0; left: 0; height: 3px; width: 100%; background: var(--hivis); transform-origin: 0 50%; transform: scaleX(0); z-index: 40; }
+.bar { position: sticky; top: 0; z-index: 30; background: rgba(232, 237, 240, .86); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); border-bottom: 1px solid transparent; transition: border-color .2s; }
+.bar.scrolled { border-bottom-color: var(--rule); }
+.bar { transition: border-color .2s, background .25s; }
+.bar.dark { background: rgba(30, 36, 40, .86); border-bottom-color: #333C43; }
+.bar.dark .mark { color: #fff; }
+.bar.dark .mark rect, .bar.dark .mark path { stroke: #fff; }
+.bar.dark nav a { color: #B8C3CB; }
+.bar.dark nav a:hover { color: #fff; }
+.bar.dark nav a.pill { background: var(--lane); color: var(--asphalt); }
+.bar.dark :focus-visible { outline-color: var(--lane); }
+.top { display: flex; justify-content: space-between; align-items: center; height: 64px; }
+.mark { display: flex; align-items: center; gap: 10px; font-family: var(--display); font-weight: 800; font-stretch: 112%; font-size: 18px; text-decoration: none; }
+.mark svg { width: 28px; height: 28px; }
+.top nav { display: flex; align-items: center; gap: 26px; font-family: var(--display); font-size: 15px; font-weight: 500; }
+.top nav a { text-decoration: none; color: var(--ink-2); transition: color .15s; }
+.top nav a:hover { color: var(--ink); }
+.top nav a.pill { color: var(--paper-2); background: var(--ink); padding: 9px 16px; border-radius: 999px; font-weight: 700; }
+
+/* ---------- hero ---------- */
+.hero { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 64px; align-items: center; padding: 56px 0 96px; }
+h1 { font-family: var(--display); font-weight: 850; font-stretch: 118%; font-size: clamp(44px, 6.4vw, 94px); line-height: .94; letter-spacing: -.022em; margin: 0 0 30px; }
+h1 .w { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .14em; margin-bottom: -.14em; }
+h1 .w > span { display: inline-block; transform: translateY(108%); animation: rise .8s var(--ease) forwards; animation-delay: calc(var(--i) * 70ms + 120ms); }
+@keyframes rise { to { transform: none; } }
+.lede { font-size: 22px; line-height: 1.5; max-width: 30em; margin: 0 0 32px; color: var(--ink-2); }
+.lede strong { color: var(--ink); font-weight: 600; }
+.actions { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+.btn { display: inline-block; font-family: var(--display); font-weight: 700; font-size: 17px; border-radius: 999px; padding: 15px 26px; text-decoration: none; border: 2px solid var(--ink); cursor: pointer; transition: transform .15s ease, background .15s ease; }
+.btn.primary { background: var(--ink); color: var(--paper-2); }
+.btn.primary:hover { background: #24313E; transform: translateY(-1px); }
+.btn.ghost { background: transparent; color: var(--ink); }
+.btn.ghost:hover { background: rgba(23, 33, 43, .06); }
+.byline { margin-top: 36px; font-family: var(--display); font-size: 15px; color: var(--ink-2); }
+.byline b { color: var(--ink); font-weight: 700; }
+
+.sheet { margin: 0; position: relative; background: var(--paper-2); border-radius: 6px; padding: 22px 22px 16px; box-shadow: 0 1px 0 var(--rule), 0 30px 50px -34px rgba(23, 33, 43, .5); transform: rotate(-.6deg); }
+.sheet::before { content: ""; position: absolute; inset: 0; border-radius: 6px; background: repeating-linear-gradient(to bottom, transparent 0 31px, rgba(42, 85, 232, .07) 31px 32px); pointer-events: none; }
+.sheet-head { display: flex; justify-content: space-between; align-items: baseline; font-family: var(--display); font-size: 14px; color: var(--ink-2); border-bottom: 1.5px solid var(--ink); padding-bottom: 8px; }
+.sheet-head b { color: var(--ink); font-size: 16px; }
+.plate { display: inline-flex; align-items: stretch; border: 1.5px solid var(--ink); border-radius: 4px; overflow: hidden; font-family: var(--display); font-weight: 700; font-stretch: 80%; font-size: 15px; letter-spacing: .06em; background: #fff; vertical-align: middle; color: var(--ink); }
+.plate i { background: #2147B8; width: 12px; }
+.plate span { padding: 1px 8px; }
+.readout { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding: 12px 0 2px; position: relative; }
+.readout div { display: flex; flex-direction: column; justify-content: flex-end; font-family: var(--display); font-size: 13px; line-height: 1.3; color: var(--ink-2); }
+.readout b { display: block; font-family: var(--mono); font-weight: 500; font-size: 30px; line-height: 1.1; color: var(--ink); font-variant-numeric: tabular-nums; letter-spacing: -.02em; }
+#route { width: 100%; height: auto; display: block; }
+.stamp { position: absolute; left: 44%; top: 176px; transform: translateX(-50%) rotate(-9deg) scale(1.5); opacity: 0; border: 3px solid var(--stamp); color: var(--stamp); font-family: var(--display); font-weight: 900; font-stretch: 112%; font-size: 20px; padding: 4px 12px; border-radius: 6px; letter-spacing: .04em; mix-blend-mode: multiply; white-space: nowrap; pointer-events: none; }
+.stamp.on { animation: stamp .35s cubic-bezier(.2, 1.6, .4, 1) forwards; }
+@keyframes stamp { to { opacity: .85; transform: translateX(-50%) rotate(-9deg) scale(1); } }
+.tlog { list-style: none; margin: 4px 0 0; padding: 0; min-height: 132px; position: relative; }
+.tlog li { display: grid; grid-template-columns: 22px 52px 1fr; gap: 8px; align-items: baseline; font-family: var(--display); font-size: 14.5px; padding: 4px 0; border-bottom: 1px dashed var(--rule); opacity: 0; transform: translateY(4px); transition: opacity .35s, transform .35s; }
+.tlog li.on { opacity: 1; transform: none; }
+.tlog .k { width: 20px; height: 20px; border-radius: 50%; background: var(--pen); color: #fff; font-size: 11px; font-weight: 800; display: grid; place-items: center; }
+.tlog time { font-weight: 700; font-variant-numeric: tabular-nums; }
+.tlog span:last-child { color: var(--ink-2); }
+.sheet-foot { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; font-size: 14px; color: var(--ink-2); margin: 10px 0 0; font-style: italic; position: relative; }
+.linkbtn { background: none; border: 0; padding: 4px 0; font-family: var(--display); font-style: normal; font-weight: 700; font-size: 14px; color: var(--pen); cursor: pointer; white-space: nowrap; text-decoration: underline; text-underline-offset: 3px; }
+
+/* ---------- project sheet (delivery-note form) ---------- */
+.form { background: var(--paper-2); border: 1.5px solid var(--ink); border-radius: 4px; }
+.form-head { display: flex; justify-content: space-between; align-items: baseline; padding: 10px 16px; border-bottom: 1.5px solid var(--ink); font-family: var(--display); font-weight: 800; font-stretch: 112%; font-size: 16px; }
+.form-head span { font-family: var(--mono); font-weight: 400; font-size: 13px; color: var(--ink-2); }
+.fields { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 0; }
+.fields div { padding: 12px 16px 14px; border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+.fields div:nth-child(4n) { border-right: 0; }
+.fields div:nth-last-child(-n+4) { border-bottom: 0; }
+.fields dt { font-family: var(--display); font-size: 12.5px; color: var(--ink-2); }
+.fields dd { margin: 3px 0 0; font-family: var(--mono); font-size: 15.5px; line-height: 1.35; color: var(--pen); }
+
+/* ---------- problem: before / after ---------- */
+.split { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 64px; align-items: start; }
+.seg { display: inline-flex; background: #D5DDE2; border-radius: 999px; padding: 4px; margin-bottom: 18px; }
+.seg button { border: 0; background: transparent; border-radius: 999px; padding: 9px 18px; font-family: var(--display); font-weight: 700; font-size: 15px; color: var(--ink-2); cursor: pointer; transition: background .2s, color .2s; }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--paper-2); }
+.calls { list-style: none; margin: 0; padding: 0; border-top: 1.5px solid var(--ink); }
+.calls li { display: grid; grid-template-columns: 64px 1fr 74px; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--rule); font-size: 17px; line-height: 1.45; align-items: baseline; }
+.calls time { font-family: var(--display); font-weight: 700; font-variant-numeric: tabular-nums; }
+.stack { display: grid; }
+.stack > * { grid-area: 1 / 1; transition: opacity .4s var(--ease), transform .4s var(--ease); }
+.calls .dur { font-family: var(--display); font-size: 14px; color: var(--ink-2); font-variant-numeric: tabular-nums; text-align: right; }
+.calls .missed { color: var(--stamp); }
+.calls .auto { color: var(--ok); font-weight: 700; }
+.calls:not(.with) .b, .tally:not(.with) .b { opacity: 0; transform: translateY(8px); pointer-events: none; }
+.calls.with .a, .tally.with .a { opacity: 0; transform: translateY(-8px); pointer-events: none; }
+.calls li .stack > * { transition-delay: calc(var(--r) * 45ms); }
+.tally { margin-top: 16px; font-family: var(--display); font-size: 17px; }
+.tally b { font-weight: 800; }
+.calls-note { font-size: 15px; color: var(--ink-2); font-style: italic; margin-top: 8px; }
+
+/* ---------- demo ---------- */
+.road { background: var(--asphalt); color: #E9EEF1; position: relative; overflow: hidden; }
+.road::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 6px; background: repeating-linear-gradient(90deg, var(--lane) 0 46px, transparent 46px 80px); opacity: .9; }
+.road h2 { color: #fff; }
+.road .measure { color: #B8C3CB; }
+
+.rail { margin-top: 40px; display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: end; }
+.rail-track { position: relative; height: 58px; }
+.rail-line { position: absolute; left: 0; right: 0; top: 22px; height: 4px; border-radius: 2px; background: repeating-linear-gradient(90deg, #4A555D 0 14px, transparent 14px 22px); }
+.rail-fill { position: absolute; left: 0; top: 22px; height: 4px; border-radius: 2px; background: var(--lane); width: 0; transition: width 1.4s ease-in-out; }
+.rail-van { position: absolute; top: 4px; left: 0; width: 44px; margin-left: -22px; transition: left 1.4s ease-in-out; }
+.rail-van svg { display: block; width: 44px; height: auto; }
+.rail-stop { position: absolute; top: 16px; width: 16px; height: 16px; margin-left: -8px; border-radius: 50%; background: var(--asphalt); border: 3px solid #5B6770; transition: border-color .3s, background .3s; }
+.rail-stop.on { border-color: var(--lane); }
+.rail-stop.warn.on { border-color: var(--hivis); background: var(--hivis); }
+.rail-label { position: absolute; top: 38px; font-family: var(--display); font-size: 13px; color: #8D9AA4; white-space: nowrap; }
+.rail-clock { font-family: var(--display); font-size: 13px; color: #8D9AA4; text-align: right; padding-bottom: 2px; }
+.rail-clock b { display: block; font-family: var(--mono); font-weight: 500; font-size: 28px; line-height: 1.1; color: #fff; font-variant-numeric: tabular-nums; }
+
+.tabs { display: none; }
+.demo { display: grid; grid-template-columns: 1fr 300px 1fr; gap: 28px; align-items: start; margin-top: 28px; }
+.phone { background: #0F1315; border-radius: 34px; padding: 12px; box-shadow: 0 0 0 1.5px #3A434A, 0 30px 60px -30px #000; }
+.screen { background: #ECE5DD; border-radius: 24px; height: 560px; display: flex; flex-direction: column; overflow: hidden; }
+.screen.office { background: #DCE3E8; }
+.chat-top { display: flex; align-items: center; gap: 10px; padding: 12px 14px; background: #1F5C4F; color: #fff; font-family: var(--display); }
+.office .chat-top { background: #22313D; }
+.avatar { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; background: rgba(255, 255, 255, .18); font-weight: 800; font-size: 14px; flex: none; }
+.chat-top b { display: block; font-size: 15px; line-height: 1.3; }
+.chat-top small { font-size: 12px; opacity: .8; }
+.msgs { flex: 1; overflow-y: auto; padding: 14px 12px; display: flex; flex-direction: column; gap: 8px; scroll-behavior: smooth; overscroll-behavior: contain; }
+.msg { max-width: 86%; padding: 8px 11px 6px; border-radius: 10px; font-family: -apple-system, "Helvetica Neue", Arial, sans-serif; font-size: 14.5px; line-height: 1.42; color: #111B21; animation: pop .26s var(--ease); }
+@keyframes pop { from { opacity: 0; transform: translateY(8px) scale(.97); } }
+.msg.in { align-self: flex-start; background: #fff; border-top-left-radius: 3px; }
+.msg.out { align-self: flex-end; background: #D9FDD3; border-top-right-radius: 3px; }
+.msg .en { display: block; font-size: 12.5px; color: #54656F; margin-top: 3px; font-style: italic; }
+.msg .t { display: block; text-align: right; font-size: 11px; color: #667781; margin-top: 2px; }
+.msg.alert { align-self: stretch; max-width: 100%; background: #fff; border-left: 4px solid var(--hivis); border-radius: 6px; animation: pop .26s var(--ease), flash 1.4s ease-out; }
+@keyframes flash { from { background: #FFE9DA; } }
+.msg.alert .tag { font-family: var(--display); font-weight: 800; font-size: 12px; color: var(--hivis); }
+.msg.alert.good { border-left-color: var(--ok); } .msg.alert.good .tag { color: var(--ok); }
+.msg.alert.work { border-left-color: var(--stamp); } .msg.alert.work .tag { color: var(--stamp); }
+.msg.alert.data { border-left-color: var(--pen); } .msg.alert.data .tag { color: var(--pen); }
+.msg a { color: #027EB5; }
+.scan { position: relative; overflow: hidden; border-radius: 6px; }
+.scan.scanning::after { content: ""; position: absolute; left: 0; right: 0; height: 30%; top: -30%; background: linear-gradient(to bottom, rgba(42, 85, 232, 0), rgba(42, 85, 232, .38), rgba(42, 85, 232, 0)); animation: scan .95s linear forwards; }
+@keyframes scan { to { top: 100%; } }
+.find { opacity: 0; transition: opacity .3s; }
+.found .find { opacity: 1; }
+.ring { stroke-dasharray: 70; stroke-dashoffset: 70; transition: stroke-dashoffset .55s ease-out, opacity .2s; }
+.found .ring { stroke-dashoffset: 0; }
+.thumbs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 4px; margin-bottom: 3px; }
+.thumbs svg, .doc svg { width: 100%; height: auto; display: block; border-radius: 6px; background: #C9D3D9; }
+.doc { width: 170px; }
+.typing { align-self: flex-start; background: #fff; border-radius: 10px; padding: 10px 12px; display: flex; gap: 4px; }
+.typing i { width: 7px; height: 7px; border-radius: 50%; background: #8696A0; animation: dot 1s infinite; }
+.typing i:nth-child(2) { animation-delay: .15s; } .typing i:nth-child(3) { animation-delay: .3s; }
+@keyframes dot { 0%, 60%, 100% { opacity: .3; } 30% { opacity: 1; } }
+.sys { align-self: center; background: #FFF5C4; color: #54656F; font-family: var(--display); font-size: 12.5px; line-height: 1.4; border-radius: 8px; padding: 5px 10px; text-align: center; max-width: 90%; animation: pop .26s var(--ease); }
+.empty { margin: auto; text-align: center; color: #6C7A84; font-family: var(--display); font-size: 14px; padding: 0 24px; }
+.composer { display: flex; gap: 8px; padding: 8px; background: #F0F2F5; border-top: 1px solid #D7DCE0; }
+.send { flex: 1; display: flex; align-items: center; justify-content: space-between; gap: 10px; background: #fff; border: 0; border-radius: 22px; padding: 6px 6px 6px 14px; font-family: var(--display); font-weight: 700; font-size: 15px; line-height: 1.25; color: #111B21; cursor: pointer; text-align: left; min-height: 46px; }
+.send .go { flex: none; width: 34px; height: 34px; border-radius: 50%; background: #1F8A5B; display: grid; place-items: center; transition: background .15s, transform .15s; }
+.send .go svg { width: 16px; height: 16px; }
+.send:disabled { color: #8696A0; cursor: default; }
+.send:disabled .go { background: #A9B4BB; }
+.send:not(:disabled):hover .go { background: #19734B; transform: scale(1.06); }
+.send:not(:disabled):active .go { transform: scale(.94); }
+.phone-label { text-align: center; font-family: var(--display); font-size: 14px; color: #8D9AA4; margin-top: 12px; }
+
+.controls { display: flex; flex-direction: column; gap: 10px; }
+.controls h3 { color: #fff; }
+.controls p { font-size: 15px; color: #B8C3CB; margin: 0 0 6px; line-height: 1.5; }
+.step-list { display: flex; flex-direction: column; gap: 8px; }
+.step { display: grid; grid-template-columns: 30px 1fr; gap: 10px; align-items: center; text-align: left; width: 100%; background: var(--asphalt-2); color: #E9EEF1; border: 1.5px solid #3A434A; border-radius: 12px; padding: 9px 12px; font-family: var(--display); font-weight: 600; font-size: 15px; cursor: pointer; transition: border-color .15s, background .15s, opacity .15s; }
+.step .n { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; border: 1.5px solid #59646D; font-weight: 800; font-size: 13px; font-variant-numeric: tabular-nums; }
+.step:hover:not(:disabled) { border-color: var(--lane); }
+.step.next { border-color: var(--lane); background: #333B42; }
+.step.next .n { background: var(--lane); color: var(--asphalt); border-color: var(--lane); }
+.step.done { opacity: .5; }
+.step.done .n { background: #3E4A52; border-color: #3E4A52; }
+.step:disabled { cursor: default; }
+.tools { display: flex; flex-wrap: wrap; gap: 8px 18px; align-items: center; margin-top: 6px; }
+.tool { background: none; border: 0; color: var(--lane); font-family: var(--display); font-weight: 700; font-size: 15px; cursor: pointer; padding: 6px 0; }
+.tool.play { background: var(--lane); color: var(--asphalt); border-radius: 999px; padding: 9px 16px; }
+.lang { display: flex; align-items: center; gap: 8px; font-family: var(--display); font-size: 14px; color: #B8C3CB; margin-top: 2px; }
+.lang input { accent-color: var(--lane); width: 18px; height: 18px; }
+
+/* ---------- how it is built ---------- */
+.flows { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 36px; }
+.flow-btn { border: 1.5px solid var(--ink); background: transparent; border-radius: 999px; padding: 10px 18px; font-family: var(--display); font-weight: 700; font-size: 15px; color: var(--ink); cursor: pointer; transition: background .15s, color .15s; }
+.flow-btn:hover { background: rgba(23, 33, 43, .06); }
+.flow-btn[aria-pressed="true"] { background: var(--ink); color: var(--paper-2); }
+.board { margin-top: 16px; display: grid; grid-template-columns: minmax(0, 1fr) 270px; gap: 0; background: var(--paper-2); border-radius: 6px; box-shadow: 0 1px 0 var(--rule); }
+.board-svg { padding: 26px 18px 26px 22px; align-self: center; }
+#arch { width: 100%; height: auto; display: block; }
+#arch text { font-family: var(--display); }
+.node rect { transition: stroke .2s, stroke-width .2s; }
+.node.on rect { stroke: var(--hivis); stroke-width: 3.5; }
+#dot { opacity: 0; transition: opacity .15s; }
+#dot.on { opacity: 1; }
+.flow-steps { list-style: none; margin: 0; padding: 26px 26px 26px 24px; border-left: 1px solid var(--rule); font-family: var(--display); font-size: 15.5px; line-height: 1.4; }
+.flow-steps li { display: grid; grid-template-columns: 26px 1fr; gap: 10px; padding: 9px 0; color: #94A1AB; transition: color .25s; }
+.flow-steps li::before { content: attr(data-n); width: 24px; height: 24px; border-radius: 50%; border: 1.5px solid currentColor; display: grid; place-items: center; font-size: 12px; font-weight: 800; }
+.flow-steps li.on { color: var(--ink); }
+.flow-steps li.on::before { background: var(--hivis); border-color: var(--hivis); color: #fff; }
+.flow-steps li.done { color: var(--ink-2); }
+.flow-steps .hint { display: block; color: var(--ink-2); padding: 9px 0; }
+.flow-steps .hint::before { content: none; }
+.choices { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px; margin-top: 56px; }
+.choices p { font-size: 17px; color: var(--ink-2); margin: 0; }
+.choices h3 { padding-top: 14px; border-top: 1.5px solid var(--ink); }
+
+/* ---------- lessons ---------- */
+.lessons { list-style: none; padding: 0; margin: 36px 0 0; border-top: 1.5px solid var(--ink); }
+.lessons li { display: grid; grid-template-columns: 250px 1fr 1fr; gap: 36px; padding: 26px 0; border-bottom: 1px solid var(--rule); }
+.lessons h3 { margin: 0; font-size: 20px; }
+.lessons p { margin: 0; font-size: 17px; color: var(--ink-2); }
+.lessons p b { display: block; font-family: var(--display); font-weight: 700; font-size: 13.5px; margin-bottom: 4px; }
+.lessons .was b { color: var(--stamp); }
+.lessons .now b { color: var(--ok); }
+
+/* ---------- closing ---------- */
+.close { background: var(--ink); color: var(--paper-2); }
+.close :focus-visible { outline-color: var(--lane); }
+.close .wrap { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 56px; align-items: end; }
+.close h2 { font-size: clamp(36px, 5vw, 68px); margin: 0; }
+.close p { color: #B8C3CB; margin: 0 0 22px; max-width: 26em; }
+.contact { display: flex; flex-wrap: wrap; gap: 12px; }
+.contact a { font-family: var(--display); font-weight: 700; font-size: 16px; text-decoration: none; border: 1.5px solid #5B6770; border-radius: 999px; padding: 12px 20px; transition: border-color .15s, background .15s; }
+.contact a:hover { border-color: var(--paper-2); }
+.contact a.main { background: var(--hivis); border-color: var(--hivis); color: #1B0E05; }
+footer { background: var(--ink); color: #8D9AA4; }
+footer .wrap { border-top: 1px solid #33414E; padding: 22px 0 34px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; font-family: var(--display); font-size: 14px; }
+footer a { color: #B8C3CB; text-decoration: none; }
+
+/* ---------- responsive ---------- */
+@media (max-width: 1020px) {
+  .demo { grid-template-columns: 1fr 1fr; }
+  .controls { grid-column: 1 / -1; order: -1; }
+  .step-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+  .board { grid-template-columns: 1fr; }
+  .flow-steps { border-left: 0; border-top: 1px solid var(--rule); }
+  .lessons li { grid-template-columns: 1fr 1fr; }
+  .lessons h3 { grid-column: 1 / -1; }
+  .fields { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .fields div:nth-child(4n) { border-right: 1px solid var(--rule); }
+  .fields div:nth-child(2n) { border-right: 0; }
+  .fields div:nth-last-child(-n+4) { border-bottom: 1px solid var(--rule); }
+  .fields div:nth-last-child(-n+2) { border-bottom: 0; }
+}
+@media (max-width: 860px) {
+  body { font-size: 18px; }
+  section { padding: 76px 0; }
+  .hero, .split, .close .wrap { grid-template-columns: 1fr; gap: 40px; }
+  .hero { padding: 28px 0 72px; }
+  .sheet { transform: none; }
+  .choices { grid-template-columns: 1fr; gap: 28px; }
+  .top nav a:not(.pill) { display: none; }
+}
+@media (max-width: 640px) {
+  .wrap { width: min(1180px, 100% - 36px); }
+  .lede { font-size: 20px; }
+  .readout b { font-size: 26px; }
+  .stamp { font-size: 13px; top: 166px; left: 36%; border-width: 2px; padding: 3px 8px; }
+  .calls li { grid-template-columns: 52px 1fr; gap: 4px 12px; }
+  .calls .dur { grid-column: 2; text-align: left; }
+  .rail { grid-template-columns: 1fr; gap: 6px; margin-top: 28px; }
+  .rail-clock { display: flex; gap: 10px; align-items: baseline; text-align: left; order: -1; }
+  .rail-clock b { font-size: 22px; }
+  .rail-track { margin: 0 22px; }
+  .tabs { display: flex; gap: 6px; background: var(--asphalt-2); border-radius: 999px; padding: 5px; margin-top: 18px; }
+  .tabs button { flex: 1; border: 0; border-radius: 999px; padding: 10px 8px; background: transparent; color: #B8C3CB; font-family: var(--display); font-weight: 700; font-size: 15px; cursor: pointer; }
+  .tabs button[aria-selected="true"] { background: #E9EEF1; color: var(--asphalt); }
+  .badge[hidden] { display: none; }
+  .badge { display: inline-grid; place-items: center; min-width: 20px; height: 20px; border-radius: 10px; background: var(--hivis); color: #fff; font-size: 12px; margin-left: 6px; padding: 0 6px; }
+  .demo { grid-template-columns: 1fr; gap: 0; margin-top: 14px; }
+  .screen { height: 470px; }
+  .pane[hidden] { display: none; }
+  .controls { order: 3; margin-top: 14px; }
+  .controls .step-list, .controls h3, .controls > p { display: none; }
+  .tools { justify-content: space-between; margin-top: 0; }
+  .board { display: flex; flex-direction: column; }
+  .board-svg { padding: 12px; }
+  .flow-steps { order: -1; padding: 12px 16px; border-top: 0; border-bottom: 1px solid var(--rule); min-height: 92px; display: flex; flex-direction: column; justify-content: center; }
+  .flow-steps li:not(.on):not(.hint) { display: none; }
+  .lessons li { grid-template-columns: 1fr; gap: 12px; }
+  .fields dd { font-size: 14.5px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-delay: 0ms !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="progress" aria-hidden="true"></div>
+
+<div class="bar" id="bar">
+  <header class="wrap top">
+    <a class="mark" href="#top" aria-label="Driverbot, top of the page">
+      <svg viewBox="0 0 28 28" aria-hidden="true"><rect x="1.5" y="6" width="17" height="13" rx="2" fill="none" stroke="#17212B" stroke-width="2.2"/><path d="M18.5 10h4.5l3.5 4.5V19h-8z" fill="none" stroke="#17212B" stroke-width="2.2" stroke-linejoin="round"/><circle cx="7" cy="21" r="2.6" fill="#FF6A13"/><circle cx="21" cy="21" r="2.6" fill="#FF6A13"/></svg>
+      Driverbot
+    </a>
+    <nav aria-label="Sections">
+      <a href="index.html">← Murtaza Waqar</a>
+      <a href="#problem">The problem</a>
+      <a href="#build">How it is built</a>
+      <a href="#lessons">What I learned</a>
+      <a class="pill" href="#demo">Try the demo</a>
+    </nav>
+  </header>
+</div>
+
+<main id="top">
+  <div class="wrap hero">
+    <div>
+      <h1 aria-label="The office can stop phoning the drivers.">
+        <span class="w" aria-hidden="true"><span style="--i:0">The</span></span>
+        <span class="w" aria-hidden="true"><span style="--i:1">office</span></span>
+        <span class="w" aria-hidden="true"><span style="--i:2">can</span></span>
+        <span class="w" aria-hidden="true"><span style="--i:3">stop</span></span>
+        <span class="w" aria-hidden="true"><span style="--i:4">phoning</span></span>
+        <span class="w" aria-hidden="true"><span style="--i:5">the</span></span>
+        <span class="w" aria-hidden="true"><span style="--i:6">drivers.</span></span>
+      </h1>
+      <p class="lede">Driverbot is a WhatsApp assistant for a <strong>delivery company in Italy with 40 vans</strong>. The bot checks each van for new damage. It reads the delivery notes. It follows the vans with GPS. It sends a message to the boss only when there is a problem.</p>
+      <div class="actions">
+        <a class="btn primary" href="#demo">Try the demo</a>
+        <a class="btn ghost" href="#build">See how it is built</a>
+      </div>
+      <p class="byline">Design and code by <b>Murtaza</b>, November 2026.</p>
+    </div>
+
+    <figure class="sheet" aria-label="The first real trip that Driverbot followed, from Narbonne to Cavernago, during one night">
+      <div class="sheet-head"><b>First real trip</b><span>Van <span class="plate"><i></i><span>DV 248 KR</span></span></span></div>
+      <div class="readout" aria-hidden="true">
+        <div>Time<b id="tripClock">19:00</b></div>
+        <div>Straight-line distance to go<b><span id="tripKm">560</span> km</b></div>
+      </div>
+      <svg id="route" viewBox="0 0 520 250" role="img" aria-labelledby="routeT">
+        <title id="routeT">The route goes from Narbonne in France, along the coast, into Italy and up to Cavernago.</title>
+        <path d="M14 222 C 70 214, 120 236, 180 226 S 270 222, 320 206 S 372 176, 404 168 S 470 176, 510 196" fill="none" stroke="#9FB0BC" stroke-width="1.5" stroke-dasharray="2 6"/>
+        <text x="200" y="244" font-family="Archivo, Arial, sans-serif" font-size="12" fill="#7D8C97" font-style="italic">Mediterranean</text>
+        <path d="M44 196 C 80 184, 110 178, 150 190 S 220 206, 262 196 S 318 184, 350 172 S 392 150, 410 140 S 436 108, 446 70" fill="none" stroke="#C9D5F7" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="1 9"/>
+        <path id="routePath" d="M44 196 C 80 184, 110 178, 150 190 S 220 206, 262 196 S 318 184, 350 172 S 392 150, 410 140 S 436 108, 446 70" fill="none" stroke="#2A55E8" stroke-width="3.5" stroke-linecap="round"/>
+        <g font-family="Archivo, Arial, sans-serif" font-size="13" fill="#17212B">
+          <circle cx="44" cy="196" r="6" fill="#17212B"/><text x="22" y="176" font-weight="700">Narbonne</text>
+          <circle cx="446" cy="70" r="6" fill="#FF6A13"/><text x="434" y="62" text-anchor="end" font-weight="700">Cavernago</text>
+          <text x="150" y="168" fill="#4A5866">France</text><text x="404" y="194" fill="#4A5866">Italy</text>
+        </g>
+        <g id="pins" font-family="Archivo, Arial, sans-serif"></g>
+        <circle id="van" r="7.5" fill="#FF6A13" stroke="#fff" stroke-width="2.5" cx="44" cy="196"/>
+      </svg>
+      <div class="stamp" id="stamp">ARRIVED 03:13</div>
+      <ol class="tlog" id="tlog" aria-label="The updates that the bot sent during the trip"></ol>
+      <p class="sheet-foot"><span>These are real GPS updates from the night of 6 November. The bot sent them to the boss while he slept.</span><button class="linkbtn" id="replay" type="button">Play the trip again</button></p>
+    </figure>
+  </div>
+
+  <div class="wrap">
+    <div class="form" aria-label="Project sheet">
+      <div class="form-head">Project sheet <span>N. 001/2026</span></div>
+      <dl class="fields">
+        <div><dt>Customer</dt><dd>A delivery company in north Italy</dd></div>
+        <div><dt>Fleet</dt><dd>40 vans</dd></div>
+        <div><dt>Where it works</dt><dd>WhatsApp</dd></div>
+        <div><dt>First version</dt><dd>Built in 1 week</dd></div>
+        <div><dt>Automated tests</dt><dd>111</dd></div>
+        <div><dt>Cost to operate</dt><dd>Approximately €5 for each van, each month</dd></div>
+        <div><dt>Status</dt><dd>Pilot. First real trip: 6 November 2026.</dd></div>
+        <div><dt>Design and code</dt><dd>Murtaza</dd></div>
+      </dl>
+    </div>
+  </div>
+
+  <section id="problem">
+    <div class="wrap split">
+      <div>
+        <h2>Before Driverbot, the work day ran on phone calls.</h2>
+        <p class="measure">Small delivery companies use WhatsApp and the phone for all their work. Each morning, the office asks the drivers the same questions. When a van has new damage, nobody knows who caused it. The office finds an unsigned delivery note only when it does the paperwork. Sometimes this is one week later.</p>
+        <p class="measure">The drivers did not want a new app. For this reason, the assistant works in WhatsApp, where the drivers already are.</p>
+      </div>
+      <div>
+        <div class="seg" role="group" aria-label="Compare the same day">
+          <button type="button" id="segA" aria-pressed="true">Without Driverbot</button>
+          <button type="button" id="segB" aria-pressed="false">With Driverbot</button>
+        </div>
+        <ol class="calls" id="calls" aria-live="polite"></ol>
+        <p class="tally stack" id="tally">
+          <span class="a"><b>6 phone calls.</b> 8 minutes 29 seconds on the phone, for one driver.</span>
+          <span class="b" aria-hidden="true"><b>1 phone call.</b> The bot does the other checks.</span>
+        </p>
+        <p class="calls-note">This is an example of a normal day. Multiply it by the number of drivers.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="road" id="demo">
+    <div class="wrap">
+      <h2>Try a driver's day.</h2>
+      <p class="measure">You are the driver. Push the green button in the chat to send each message. The bot replies in Italian, the same as for the real drivers. The boss's phone shows only the alerts that he must see.</p>
+
+      <div class="rail" aria-hidden="true">
+        <div class="rail-track">
+          <div class="rail-line"></div>
+          <div class="rail-fill" id="railFill"></div>
+          <span class="rail-stop on" style="left:0"></span><span class="rail-label" style="left:0">Depot</span>
+          <span class="rail-stop warn" id="railStop" style="left:55%"></span><span class="rail-label" style="left:55%; transform:translateX(-50%)">Stop</span>
+          <span class="rail-stop" id="railEnd" style="left:100%"></span><span class="rail-label" style="right:0">Bergamo</span>
+          <div class="rail-van" id="railVan"><svg viewBox="0 0 44 26"><rect x="1.5" y="3" width="26" height="15" rx="2" fill="#F5F7F8" stroke="#F5F7F8" stroke-width="1"/><path d="M28 8h8l6 6v4H28z" fill="#F5F7F8"/><circle cx="10" cy="20" r="4.2" fill="#FF6A13" stroke="#1E2428" stroke-width="2"/><circle cx="34" cy="20" r="4.2" fill="#FF6A13" stroke="#1E2428" stroke-width="2"/></svg></div>
+        </div>
+        <div class="rail-clock">Time in the demo<b id="demoClock">07:00</b></div>
+      </div>
+
+      <div class="tabs" role="tablist" aria-label="Select a phone">
+        <button type="button" role="tab" id="tabDriver" aria-selected="true">Driver</button>
+        <button type="button" role="tab" id="tabOffice" aria-selected="false">Boss <span class="badge" id="badge" hidden>0</span></button>
+      </div>
+
+      <div class="demo">
+        <div class="pane" id="paneDriver">
+          <div class="phone"><div class="screen">
+            <div class="chat-top"><div class="avatar">DB</div><div><b>Driverbot</b><small>Chat with Marco</small></div></div>
+            <div class="msgs" id="driverMsgs" aria-live="polite"></div>
+            <div class="composer"><button class="send" id="send" type="button"><span id="sendLabel">Start the day</span><span class="go" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M2 8h10M8 3l5 5-5 5" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button></div>
+          </div></div>
+          <div class="phone-label">The driver's WhatsApp</div>
+        </div>
+
+        <div class="controls">
+          <h3>The day of Marco</h3>
+          <p>Van DV 248 KR. One delivery in Bergamo. The appointment is at 11:00.</p>
+          <div class="step-list" id="steps"></div>
+          <div class="tools">
+            <button class="tool play" id="playAll" type="button">Play the full day</button>
+            <button class="tool" id="reset" type="button">Start again</button>
+          </div>
+          <label class="lang"><input type="checkbox" id="showEn" checked> Show English below each message</label>
+        </div>
+
+        <div class="pane" id="paneOffice">
+          <div class="phone"><div class="screen office">
+            <div class="chat-top"><div class="avatar">UF</div><div><b>Office updates</b><small>Only the items that need attention</small></div></div>
+            <div class="msgs" id="officeMsgs" aria-live="polite"></div>
+          </div></div>
+          <div class="phone-label">The boss's phone</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="build">
+    <div class="wrap">
+      <h2>How it is built.</h2>
+      <p class="measure">One program follows the steps of the driver's day. The program uses AI only to read photos, delivery notes and Maps screenshots. All other parts are simple code that always does the same thing.</p>
+
+      <div class="flows" role="group" aria-label="Select a flow to see it on the diagram">
+        <button class="flow-btn" type="button" data-flow="photo" aria-pressed="false">Follow a van photo</button>
+        <button class="flow-btn" type="button" data-flow="gps" aria-pressed="false">Follow a GPS check</button>
+        <button class="flow-btn" type="button" data-flow="ask" aria-pressed="false">Follow a question from the boss</button>
+      </div>
+      <div class="board">
+        <div class="board-svg"><svg id="arch" role="img" aria-labelledby="archT"></svg></div>
+        <ol class="flow-steps" id="flowSteps" aria-live="polite"><li class="hint">Select a flow. The diagram shows how the message moves through the system.</li></ol>
+      </div>
+
+      <div class="choices">
+        <div><h3>Fixed steps, not a free agent</h3><p>The day of a driver has the same steps each time. For this reason, the bot follows fixed steps. The bot uses AI only where a person must look at something: a photo, a signature or a screenshot.</p></div>
+        <div><h3>In the app that the drivers use</h3><p>The drivers do not install a new app. They send photos in WhatsApp, as before. The boss reads the updates for each driver.</p></div>
+        <div><h3>Safe by default</h3><p>The GPS login can only read data. It cannot change data. The photos are in a private store, and only the key of the bot can open it. The keys are not in the code.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="lessons" style="padding-top:0">
+    <div class="wrap">
+      <h2>What I learned.</h2>
+      <ul class="lessons">
+        <li><h3>A van arrives only when it stops.</h3>
+          <p class="was"><b>Problem</b>The first version said "arrived" when a van came within 3 km of the town. This also occurred when the van went past at 55 km/h.</p>
+          <p class="now"><b>Correction</b>Now the bot waits until the van parks.</p></li>
+        <li><h3>Message costs change the design.</h3>
+          <p class="was"><b>Problem</b>WhatsApp charges for each message that the bot sends. With 40 vans, the cost increases quickly.</p>
+          <p class="now"><b>Correction</b>The bot sends only the problems to the boss. His updates can go to a channel that is free.</p></li>
+        <li><h3>Time zones can cause errors.</h3>
+          <p class="was"><b>Problem</b>A Maps screenshot from a UK phone showed a time that was one hour wrong. This caused a false "late" alert.</p>
+          <p class="now"><b>Correction</b>Now the bot uses the trip duration, not the clock in the screenshot.</p></li>
+        <li><h3>Make the plan before you build.</h3>
+          <p class="was"><b>Problem</b>The requirements came one at a time, and the code grew with them.</p>
+          <p class="now"><b>Correction</b>Next time, I will make the flowchart, the costs and the special cases first.</p></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="close" id="contact">
+    <div class="wrap">
+      <h2>Do you have a problem like this?</h2>
+      <div>
+        <p>I design and build assistants that work in the tools that people already use. Send me a message.</p>
+        <div class="contact">
+          <a class="main" href="about.html">Send me a paper plane</a>
+          <a href="https://github.com/murtaza-waqar-257" target="_blank" rel="noopener">GitHub</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer><div class="wrap"><span>Murtaza, 2026.</span><span><a href="index.html">← All projects</a> &nbsp;·&nbsp; <a href="#top">Back to the top</a></span></div></footer>
+
+<script>
+(() => {
+  "use strict";
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const $ = (id) => document.getElementById(id);
+  const SVGNS = "http://www.w3.org/2000/svg";
+
+  /* ================= page chrome ================= */
+  const progress = $("progress"), bar = $("bar");
+  let ticking = false;
+  const darkSections = document.querySelectorAll(".road, .close, footer");
+  function onScroll() {
+    if (ticking) return; ticking = true;
+    requestAnimationFrame(() => {
+      const max = document.documentElement.scrollHeight - innerHeight;
+      progress.style.transform = `scaleX(${max > 0 ? Math.min(1, scrollY / max) : 0})`;
+      bar.classList.toggle("scrolled", scrollY > 8);
+      let dark = false;
+      for (const s of darkSections) { const r = s.getBoundingClientRect(); if (r.top <= 32 && r.bottom > 32) dark = true; }
+      bar.classList.toggle("dark", dark);
+      ticking = false;
+    });
+  }
+  addEventListener("scroll", onScroll, { passive: true }); onScroll();
+
+  /* ================= hero: the night trip ================= */
+  const path = $("routePath"), van = $("van"), pins = $("pins"), stamp = $("stamp"), tlog = $("tlog");
+  const tripClock = $("tripClock"), tripKm = $("tripKm");
+  const L = path.getTotalLength();
+  const stops = [
+    { at: 0.07, time: "19:07", text: "The van moves. 552 km to go." },
+    { at: 0.38, time: "21:14", text: "397 km to go." },
+    { at: 0.68, time: "23:49", text: "The van moves again after a 35-minute stop." },
+    { at: 0.88, time: "00:23", text: "289 km by road. Approximately 3 hours." },
+  ];
+  // progress -> [minutes since 00:00 of day 1, km to go]
+  const KEYS = [[0, 1140, 560], [0.07, 1147, 552], [0.38, 1274, 397], [0.68, 1429, 261], [0.88, 1463, 225], [1, 1633, 0]];
+  function readAt(e) {
+    let i = 1; while (i < KEYS.length - 1 && e > KEYS[i][0]) i++;
+    const a = KEYS[i - 1], b = KEYS[i], k = (e - a[0]) / (b[0] - a[0] || 1);
+    const m = Math.round(a[1] + (b[1] - a[1]) * k), km = Math.round(a[2] + (b[2] - a[2]) * k);
+    tripClock.textContent = `${String(Math.floor(m / 60) % 24).padStart(2, "0")}:${String(m % 60).padStart(2, "0")}`;
+    tripKm.textContent = km;
+  }
+  path.style.strokeDasharray = L;
+  tlog.innerHTML = stops.map((s, i) => `<li><span class="k">${i + 1}</span><time>${s.time}</time><span>${s.text}</span></li>`).join("");
+  let tripRun = 0;
+  function showPin(i) {
+    const s = stops[i], p = path.getPointAtLength(L * s.at);
+    const g = document.createElementNS(SVGNS, "g");
+    g.innerHTML = `<circle cx="${p.x}" cy="${p.y}" r="10" fill="#2A55E8" stroke="#fff" stroke-width="2"/><text x="${p.x}" y="${p.y + 4}" text-anchor="middle" font-size="11" font-weight="800" fill="#fff">${i + 1}</text>`;
+    g.style.opacity = 0; g.style.transition = "opacity .3s";
+    pins.appendChild(g); requestAnimationFrame(() => (g.style.opacity = 1));
+    tlog.children[i].classList.add("on");
+  }
+  function setTrip(e) {
+    path.style.strokeDashoffset = L * (1 - e);
+    const p = path.getPointAtLength(L * e); van.setAttribute("cx", p.x); van.setAttribute("cy", p.y);
+    readAt(e);
+  }
+  function playTrip() {
+    const run = ++tripRun;
+    pins.innerHTML = ""; stamp.classList.remove("on");
+    [...tlog.children].forEach((li) => li.classList.remove("on"));
+    if (reduce) { setTrip(1); stops.forEach((_, i) => showPin(i)); stamp.classList.add("on"); return; }
+    setTrip(0);
+    const dur = 6200; let t0 = null, shown = 0;
+    const ease = (t) => (t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2);
+    function frame(ts) {
+      if (run !== tripRun) return;
+      if (t0 === null) t0 = ts;
+      const k = Math.min(1, (ts - t0) / dur), e = ease(k);
+      setTrip(e);
+      while (shown < stops.length && e >= stops[shown].at) showPin(shown++);
+      if (k < 1) requestAnimationFrame(frame); else stamp.classList.add("on");
+    }
+    requestAnimationFrame(frame);
+  }
+  setTrip(0);
+  setTimeout(playTrip, reduce ? 0 : 900);
+  $("replay").onclick = playTrip;
+
+  /* ================= problem: before / after ================= */
+  const ROWS = [
+    ["06:52", 'Office to Marco: "Do you have the van?"', "0:48", "The bot checks 4 photos of the van.", "no call"],
+    ["08:15", 'Office to Marco: "Where are you now?"', "1:12", "The GPS shows the van on the A4 motorway.", "no call"],
+    ["09:40", "Office to Marco: no answer. Marco is on the road.", "missed", "Alert to the office: the van is stopped for 18 minutes.", "no call"],
+    ["10:05", 'Customer to office: "When is our delivery?"', "2:30", 'The office phones the customer first: "The van will be 40 minutes late."', "1:10"],
+    ["11:58", 'Office to Marco: "Did the customer sign the note?"', "0:55", "The bot reads the signature on the delivery note.", "no call"],
+    ["17:20", 'Workshop to office: "Who made the scratch on the left door?"', "3:04", "The morning photos show the scratch. The workshop has the photos.", "no call"],
+  ];
+  const calls = $("calls"), tally = $("tally"), segA = $("segA"), segB = $("segB");
+  calls.innerHTML = ROWS.map((r, i) => `<li style="--r:${i}"><time>${r[0]}</time>
+    <span class="stack"><span class="a${r[2] === "missed" ? " missed" : ""}">${r[1]}</span><span class="b" aria-hidden="true">${r[3]}</span></span>
+    <span class="stack dur"><span class="a${r[2] === "missed" ? " missed" : ""}">${r[2]}</span><span class="b${r[4] === "no call" ? " auto" : ""}" aria-hidden="true">${r[4]}</span></span></li>`).join("");
+  function setWith(on) {
+    calls.classList.toggle("with", on); tally.classList.toggle("with", on);
+    segA.setAttribute("aria-pressed", String(!on)); segB.setAttribute("aria-pressed", String(on));
+    document.querySelectorAll("#calls .a, #tally .a").forEach((e) => e.setAttribute("aria-hidden", String(on)));
+    document.querySelectorAll("#calls .b, #tally .b").forEach((e) => e.setAttribute("aria-hidden", String(!on)));
+  }
+  segA.onclick = () => setWith(false); segB.onclick = () => setWith(true);
+
+  /* ================= demo ================= */
+  const dEl = $("driverMsgs"), oEl = $("officeMsgs"), stepsEl = $("steps"), showEn = $("showEn");
+  const sendBtn = $("send"), sendLabel = $("sendLabel"), playBtn = $("playAll");
+  const railVan = $("railVan"), railFill = $("railFill"), railStop = $("railStop"), railEnd = $("railEnd"), demoClock = $("demoClock");
+  const badge = $("badge"), tabD = $("tabDriver"), tabO = $("tabOffice"), paneD = $("paneDriver"), paneO = $("paneOffice");
+  const mobile = () => matchMedia("(max-width: 640px)").matches;
+
+  let gen = 0, nextIdx = 0, busy = false, auto = false, unseen = 0, clock = "07:00";
+  const CANCEL = Symbol("cancel");
+  const wait = (ms) => { const g = gen; return new Promise((res, rej) => setTimeout(() => (g === gen ? res() : rej(CANCEL)), reduce ? 0 : ms)); };
+
+  const vanSide = (label, scratch, ring) => `<svg viewBox="0 0 120 70" aria-label="Photo of the van, ${label}"><rect width="120" height="70" fill="#B9C6CE"/><rect x="10" y="20" width="76" height="32" rx="3" fill="#F5F7F8" stroke="#17212B" stroke-width="1.5"/><path d="M86 28h14l10 12v12H86z" fill="#F5F7F8" stroke="#17212B" stroke-width="1.5"/><circle cx="30" cy="54" r="7" fill="#17212B"/><circle cx="96" cy="54" r="7" fill="#17212B"/>${scratch ? '<path d="M38 31l14 6M42 29l12 7" stroke="#C2342C" stroke-width="1.6"/>' : ""}${ring ? '<circle class="ring" cx="46" cy="33" r="11" fill="none" stroke="#FF6A13" stroke-width="2.4" transform="rotate(-90 46 33)"/>' : ""}<text x="6" y="12" font-family="Archivo,Arial" font-size="9" fill="#17212B">${label}</text></svg>`;
+  const photos = (ring) => `<div class="thumbs scan">${vanSide("front")}${vanSide("back")}${vanSide("left", true, ring)}${vanSide("right")}</div>`;
+  const note = (signed) => `<div class="doc scan"><svg viewBox="0 0 170 110" aria-label="Photo of a delivery note"><rect width="170" height="110" fill="#F3F0E6"/><text x="10" y="18" font-family="Archivo,Arial" font-size="10" font-weight="700" fill="#17212B">DOCUMENTO DI TRASPORTO</text><text x="10" y="33" font-family="Archivo,Arial" font-size="9" fill="#4A5866">N. 4521/2026</text><g stroke="#C3CDD4"><line x1="10" y1="46" x2="160" y2="46"/><line x1="10" y1="58" x2="160" y2="58"/><line x1="10" y1="70" x2="130" y2="70"/></g><text x="10" y="98" font-family="Archivo,Arial" font-size="8" fill="#4A5866">Firma destinatario: ______</text>${signed ? '<path d="M70 96c6-10 10 2 15-6s8 8 13 0 6 4 12-2" fill="none" stroke="#2A55E8" stroke-width="1.6"/><g transform="rotate(-10 135 60)"><rect x="108" y="48" width="54" height="20" rx="3" fill="none" stroke="#C2342C" stroke-width="1.6"/><text x="135" y="62" text-anchor="middle" font-family="Archivo,Arial" font-size="9" font-weight="800" fill="#C2342C">RICEVUTO</text></g>' : ""}<rect class="find" x="6" y="23" width="74" height="14" rx="3" fill="none" stroke="#1F8A5B" stroke-width="1.8"/><rect class="find" x="6" y="86" width="118" height="17" rx="3" fill="none" stroke="${signed ? "#1F8A5B" : "#FF6A13"}" stroke-width="1.8" ${signed ? "" : 'stroke-dasharray="4 3"'}/></svg></div>`;
+  const maps = `<div class="doc scan"><svg viewBox="0 0 170 110" aria-label="Google Maps screenshot"><rect width="170" height="110" fill="#E8EEE6"/><path d="M10 95 C 50 80, 70 60, 100 50 S 140 25, 160 15" stroke="#2A55E8" stroke-width="4" fill="none"/><rect x="10" y="10" width="78" height="30" rx="5" fill="#fff"/><text x="16" y="23" font-family="Archivo,Arial" font-size="10" font-weight="700" fill="#1F8A5B">1 h 25 min</text><text x="16" y="35" font-family="Archivo,Arial" font-size="8.5" fill="#4A5866">94 km, A4</text><rect class="find" x="8" y="8" width="82" height="34" rx="6" fill="none" stroke="#1F8A5B" stroke-width="1.8"/></svg></div>`;
+
+  function add(el, html) { const e = el.querySelector(".empty"); if (e) e.remove(); el.insertAdjacentHTML("beforeend", html); el.scrollTop = el.scrollHeight; return el.lastElementChild; }
+  const en = (t) => (t ? `<span class="en"${showEn.checked ? "" : " hidden"}>${t}</span>` : "");
+  function driver(html, english) { return add(dEl, `<div class="msg out">${html}${en(english)}<span class="t">${clock} ✓✓</span></div>`); }
+  function media(html) {
+    const m = add(dEl, `<div class="msg out">${html}<span class="t">${clock} ✓✓</span></div>`);
+    const s = m.querySelector(".scan");
+    if (s) { s.classList.add("scanning"); setTimeout(() => { s.classList.remove("scanning"); s.classList.add("found"); dEl.scrollTop = dEl.scrollHeight; }, reduce ? 0 : 1000); }
+  }
+  async function bot(it, english) {
+    await wait(350);
+    add(dEl, '<div class="typing" aria-label="Driverbot writes a reply"><i></i><i></i><i></i></div>');
+    await wait(1000);
+    const ty = dEl.querySelector(".typing"); if (ty) ty.remove();
+    add(dEl, `<div class="msg in">${it}${en(english)}<span class="t">${clock}</span></div>`);
+  }
+  function sys(text) { add(dEl, `<div class="sys">${text}</div>`); }
+  function office(kind, tag, text) {
+    if (mobile() && paneO.hidden) { unseen++; badge.textContent = unseen; badge.hidden = false; }
+    add(oEl, `<div class="msg alert ${kind === "late" ? "" : kind}"><span class="tag">${tag}</span><br>${text}<span class="t">${clock}</span></div>`);
+  }
+  const setClock = (t) => { clock = t; demoClock.textContent = t; };
+
+  const STEPS = [
+    { label: "Start the day", send: "Start the day", at: "07:02", rail: 0, run: async () => {
+      await bot("Buongiorno Marco! 🚚 Prima di tutto mandami 4 foto del furgone DV 248 KR: davanti, dietro, lato sinistro, lato destro 📸",
+                "Good morning, Marco! First, send 4 photos of the van: front, back, left side and right side.");
+    }},
+    { label: "Send 4 van photos", send: "📷 Send 4 van photos", at: "07:06", rail: 0, run: async () => {
+      media(photos(true));
+      await bot("Targa DV 248 KR ✅ Ho notato un graffio nuovo sul lato sinistro, l'ho segnalato all'officina. Ora mandami la bolla e una foto del carico 📄📦",
+                "The plate is correct. There is a new scratch on the left side. I told the workshop. Now send the delivery note and a photo of the load.");
+      office("work", "Workshop", "New scratch on the left side of DV 248 KR. This scratch is not in the photos from yesterday. The bot saved the photos.");
+    }},
+    { label: "Send the delivery note", send: "📄 Send the delivery note", at: "07:15", rail: 0, run: async () => {
+      media(note(false));
+      await bot("Bolla n. 4521/2026 letta ✅ Manca ancora la firma del cliente: ricordati di farla firmare alla consegna ✍️ Ora mandami lo screenshot di Google Maps con l'orario di arrivo 🗺️",
+                "I read delivery note 4521/2026. The customer did not sign it yet. Get a signature at the delivery. Now send a Google Maps screenshot with your arrival time.");
+    }},
+    { label: "Send a Maps screenshot", send: "🗺️ Send the Maps screenshot", at: "07:21", rail: 6, run: async () => {
+      media(maps);
+      await bot("Arrivo previsto alle 11:40 🕚 L'appuntamento è entro le 11:00, avviso l'ufficio. Buon viaggio!",
+                "Your arrival time is 11:40. The appointment is at 11:00 or before. I will tell the office. Drive safely.");
+      office("late", "Traffic", "Marco will arrive in Bergamo at approximately 11:40. The appointment is at 11:00. Marco will be 40 minutes late. Phone the customer.");
+    }},
+    { label: "Stop for 18 minutes", send: "Skip ahead: the van stops", at: "09:40", rail: 55, run: async () => {
+      sys("09:22: Marco stops the van. The bot monitors the GPS. The driver does not do anything.");
+      await wait(1300);
+      railStop.classList.add("on");
+      office("late", "Traffic", 'Marco is stopped for 18 minutes. This stop is not in the plan. <a href="https://maps.google.com/?q=45.53,9.42" target="_blank" rel="noopener">See on map</a>');
+      await wait(1100); setClock("09:58");
+      sys("09:58: Marco drives again.");
+      office("good", "Traffic", "Marco moves again after 18 minutes. Bergamo is 52 km by road. This is approximately 40 minutes.");
+    }},
+    { label: "Arrive at the customer", send: "Skip ahead: the van arrives in Bergamo", at: "11:43", rail: 100, run: async () => {
+      await wait(1300);
+      railEnd.classList.add("on");
+      await bot("Sei arrivato a Bergamo 📍 (rilevato dal GPS). Manda la foto della bolla firmata ✍️",
+                "You are in Bergamo. The GPS shows this. Send a photo of the signed delivery note.");
+      office("good", "Traffic", "Marco arrived in Bergamo at 11:43. The GPS showed this when the van parked.");
+    }},
+    { label: "Send the signed note", send: "📄 Send the signed note", at: "11:47", rail: 100, run: async () => {
+      media(note(true));
+      await bot("Bolla 4521/2026 firmata ✅ Consegna completata. Buon rientro!",
+                "Delivery note 4521/2026 has a signature. The delivery is complete. Drive safely back.");
+      office("data", "Documents", "Delivery note 4521/2026 has a signature now. The delivery is complete.");
+    }},
+    { label: "Finish the day", send: "📷 Send end-of-shift photos", at: "17:30", rail: 0, run: async () => {
+      driver("Fatto, giornata finita 👍", "Done. The day is finished.");
+      await wait(500);
+      media(photos(false));
+      await bot("Grazie Marco! Foto ricevute ✅ Nessun danno nuovo rispetto a stamattina. Buona serata!",
+                "Thank you, Marco. I have the photos. There is no new damage since this morning. Have a good evening.");
+      office("data", "Day summary", "Marco, DV 248 KR. Start: 07:02. Deliveries: 1, signed. Distance: 186 km. Open item: the scratch on the left side from this morning.");
+    }},
+  ];
+
+  function moveRail(pct) { railVan.style.left = pct + "%"; railFill.style.width = pct + "%"; }
+  async function runStep(i) {
+    if (busy || i !== nextIdx) return false;
+    busy = true; render();
+    setClock(STEPS[i].at); moveRail(STEPS[i].rail);
+    try { await STEPS[i].run(); } catch (e) { if (e === CANCEL) return false; throw e; }
+    nextIdx++; busy = false; render();
+    return true;
+  }
+  async function playAll() {
+    if (auto) { auto = false; render(); return; }
+    if (nextIdx >= STEPS.length) reset();
+    auto = true; render();
+    const g = gen;
+    try {
+      while (auto && g === gen && nextIdx < STEPS.length) {
+        if (!busy) { const ok = await runStep(nextIdx); if (!ok) break; }
+        await wait(1000);
+      }
+    } catch (e) { if (e !== CANCEL) throw e; }
+    if (g === gen) { auto = false; render(); }
+  }
+  function render() {
+    stepsEl.innerHTML = "";
+    STEPS.forEach((s, i) => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "step" + (i < nextIdx ? " done" : i === nextIdx ? " next" : "");
+      b.disabled = i !== nextIdx || busy || auto;
+      b.innerHTML = `<span class="n">${i + 1}</span><span>${s.label}</span>`;
+      b.onclick = () => runStep(i);
+      stepsEl.appendChild(b);
+    });
+    const done = nextIdx >= STEPS.length;
+    sendBtn.disabled = busy || done || auto;
+    sendLabel.textContent = done ? "The day is finished. Push Start again." : busy ? "Driverbot writes a reply…" : auto ? "The demo plays…" : STEPS[nextIdx].send;
+    playBtn.textContent = auto ? "Stop after this step" : done ? "Play the day again" : nextIdx > 0 ? "Play the remaining steps" : "Play the full day";
+  }
+  function showPane(which) {
+    const off = which === "office";
+    tabD.setAttribute("aria-selected", String(!off)); tabO.setAttribute("aria-selected", String(off));
+    if (mobile()) { paneD.hidden = off; paneO.hidden = !off; } else { paneD.hidden = false; paneO.hidden = false; }
+    if (off) { unseen = 0; badge.hidden = true; oEl.scrollTop = oEl.scrollHeight; }
+  }
+  function reset() {
+    gen++; nextIdx = 0; busy = false; auto = false; unseen = 0; badge.hidden = true;
+    dEl.innerHTML = '<div class="empty">Push the button below to start the day for Marco.</div>';
+    oEl.innerHTML = '<div class="empty">No problems at this time. Alerts show here.</div>';
+    railStop.classList.remove("on"); railEnd.classList.remove("on");
+    setClock("07:00"); moveRail(0); showPane("driver"); render();
+  }
+  sendBtn.onclick = () => runStep(nextIdx);
+  playBtn.onclick = playAll;
+  $("reset").onclick = reset;
+  tabD.onclick = () => showPane("driver"); tabO.onclick = () => showPane("office");
+  showEn.onchange = () => document.querySelectorAll(".msg .en").forEach((e) => (e.hidden = !showEn.checked));
+  reset();
+
+  /* ================= architecture ================= */
+  const arch = $("arch"), flowSteps = $("flowSteps"), flowBtns = [...document.querySelectorAll(".flow-btn")];
+  const NODES = {
+    drivers: { t: "Drivers", s: "photos, ETA, arrival", ss: "photos, ETA", kind: "people" },
+    office: { t: "Office", s: "updates and commands", ss: "updates", kind: "people" },
+    chat: { t: "Chat app", s: "messages in, out", ss: "messages in, out", kind: "plain" },
+    bot: { t: "Driverbot", s: "on a cloud server", ss: "on a cloud server", kind: "bot" },
+    ai: { t: "AI vision", s: "reads photos and notes", ss: "reads photos", kind: "svc" },
+    gps: { t: "GPS provider", s: "live van positions, read-only", ss: "read-only", kind: "svc" },
+    route: { t: "Route service", s: "road km and drive time", ss: "road km, time", kind: "svc" },
+    store: { t: "Cloud storage", s: "photos and records, private", ss: "private", kind: "svc" },
+  };
+  const LAY = {
+    wide: { vb: [1000, 330], ts: 20, ss: 14.5, sub: "s",
+      n: { drivers: [20, 40, 190, 72], office: [20, 218, 190, 72], chat: [270, 129, 150, 72], bot: [480, 105, 200, 120], ai: [760, 14, 220, 56], gps: [760, 92, 220, 56], route: [760, 170, 220, 56], store: [760, 248, 220, 56] },
+      e: { dc: "M214 76 C 244 76, 240 150, 266 155", oc: "M214 254 C 244 254, 240 180, 266 175", cb: "M424 165 L 476 165", ba: "M684 130 C 720 130, 720 42, 756 42", bg: "M684 150 C 720 150, 720 120, 756 120", br: "M684 180 C 720 180, 720 198, 756 198", bs: "M684 200 C 720 200, 720 276, 756 276" } },
+    tall: { vb: [360, 524], ts: 18, ss: 14, sub: "ss",
+      n: { drivers: [16, 8, 156, 68], office: [188, 8, 156, 68], chat: [100, 122, 160, 64], bot: [60, 230, 240, 100], ai: [16, 372, 144, 64], gps: [200, 372, 144, 64], route: [16, 452, 144, 64], store: [200, 452, 144, 64] },
+      e: { dc: "M94 80 C 94 104, 150 96, 156 118", oc: "M266 80 C 266 104, 210 96, 204 118", cb: "M180 190 L 180 226", ba: "M180 334 L 180 404 L 164 404", bg: "M180 334 L 180 404 L 196 404", br: "M180 334 L 180 484 L 164 484", bs: "M180 334 L 180 484 L 196 484" } },
+  };
+  const BOTH = new Set(["dc", "oc", "cb"]);
+  const FLOWS = {
+    photo: [
+      { cap: "The driver sends a photo of the van.", legs: [["dc", 0, "chat"]] },
+      { cap: "The chat app gives the photo to the bot.", legs: [["cb", 0, "bot"]] },
+      { cap: "The bot asks the AI to read the photo. The AI finds a new scratch.", legs: [["ba", 0, "ai"], ["ba", 1, "bot"]] },
+      { cap: "The bot saves the photo in the private storage.", legs: [["bs", 0, "store"]] },
+      { cap: "The bot sends an alert to the office.", legs: [["cb", 1, "chat"], ["oc", 1, "office"]] },
+    ],
+    gps: [
+      { cap: "Each minute, the bot asks the GPS provider for the van positions.", legs: [["bg", 0, "gps"], ["bg", 1, "bot"]] },
+      { cap: "One van is stopped for 18 minutes. The bot asks for the road distance to the customer.", legs: [["br", 0, "route"], ["br", 1, "bot"]] },
+      { cap: "The bot sends an alert to the office.", legs: [["cb", 1, "chat"], ["oc", 1, "office"]] },
+    ],
+    ask: [
+      { cap: 'The boss asks: "Where is van DV 248 KR?"', legs: [["oc", 0, "chat"], ["cb", 0, "bot"]] },
+      { cap: "The bot gets the position of the van.", legs: [["bg", 0, "gps"], ["bg", 1, "bot"]] },
+      { cap: "The bot gets the road distance and the drive time.", legs: [["br", 0, "route"], ["br", 1, "bot"]] },
+      { cap: "The bot replies with a map link, the distance and the arrival time.", legs: [["cb", 1, "chat"], ["oc", 1, "office"]] },
+    ],
+  };
+  const FILL = { people: ["#E1F1EA", "#1F8A5B"], plain: ["#F5F7F8", "#17212B"], bot: ["#1E2428", "#1E2428"], svc: ["#FFFFFF", "#2A55E8"] };
+  let layout = null, flowGen = 0;
+  function drawArch() {
+    const name = matchMedia("(max-width: 640px)").matches ? "tall" : "wide";
+    if (name === layout) return;
+    layout = name; flowGen++;
+    const Y = LAY[name];
+    arch.setAttribute("viewBox", `0 0 ${Y.vb[0]} ${Y.vb[1]}`);
+    let h = `<title id="archT">Architecture. The drivers and the office talk to the bot through a chat app. The bot runs on a cloud server. It uses AI vision, a GPS provider, a route service and cloud storage.</title>
+      <defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#4A5866" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>`;
+    for (const id in Y.e) h += `<path id="e-${id}" d="${Y.e[id]}" fill="none" stroke="#4A5866" stroke-width="1.6" marker-end="url(#ah)"${BOTH.has(id) ? ' marker-start="url(#ah)"' : ""}/>`;
+    for (const id in Y.n) {
+      const [x, y, w, hh] = Y.n[id], N = NODES[id], [fill, stroke] = FILL[N.kind], isBot = N.kind === "bot";
+      const cx = x + w / 2;
+      h += `<g class="node" id="n-${id}"><rect x="${x}" y="${y}" width="${w}" height="${hh}" rx="${isBot ? 12 : 10}" fill="${fill}" stroke="${stroke}" stroke-width="1.5"/>`;
+      if (isBot) {
+        h += `<text x="${cx}" y="${y + hh * .38}" text-anchor="middle" font-size="${Y.ts + 2}" font-weight="800" fill="#fff">${N.t}</text>
+              <text x="${cx}" y="${y + hh * .58}" text-anchor="middle" font-size="${Y.ss}" fill="#B8C3CB">${N[Y.sub]}</text>
+              <text x="${cx}" y="${y + hh * .80}" text-anchor="middle" font-size="${Y.ss - 1}" fill="#F2C230" style="font-family:var(--mono)">fixed steps, 24/7</text>`;
+      } else {
+        h += `<text x="${cx}" y="${y + hh / 2 - 4}" text-anchor="middle" font-size="${Y.ts}" font-weight="700" fill="#17212B">${N.t}</text>
+              <text x="${cx}" y="${y + hh / 2 + Y.ss + 3}" text-anchor="middle" font-size="${Y.ss}" fill="#4A5866">${N[Y.sub]}</text>`;
+      }
+      h += "</g>";
+    }
+    h += `<circle id="dot" r="${name === "tall" ? 8 : 9}" fill="#FF6A13" stroke="#fff" stroke-width="3"/>`;
+    arch.innerHTML = h;
+    flowBtns.forEach((b) => b.setAttribute("aria-pressed", "false"));
+    flowSteps.innerHTML = '<li class="hint">Select a flow. The diagram shows how the message moves through the system.</li>';
+  }
+  function moveDot(edge, rev, g) {
+    return new Promise((res) => {
+      const p = arch.querySelector("#e-" + edge), dot = arch.querySelector("#dot");
+      if (!p || !dot) return res();
+      const len = p.getTotalLength(), dur = 620; let t0 = null;
+      dot.classList.add("on");
+      function f(ts) {
+        if (g !== flowGen) return res();
+        if (t0 === null) t0 = ts;
+        const k = Math.min(1, (ts - t0) / dur), e = k < .5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
+        const pt = p.getPointAtLength(len * (rev ? 1 - e : e));
+        dot.setAttribute("cx", pt.x); dot.setAttribute("cy", pt.y);
+        k < 1 ? requestAnimationFrame(f) : res();
+      }
+      requestAnimationFrame(f);
+    });
+  }
+  const pause = (ms) => new Promise((r) => setTimeout(r, ms));
+  async function runFlow(name) {
+    const g = ++flowGen, flow = FLOWS[name];
+    flowBtns.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.flow === name)));
+    arch.querySelectorAll(".node.on").forEach((n) => n.classList.remove("on"));
+    flowSteps.innerHTML = flow.map((s, i) => `<li data-n="${i + 1}">${s.cap}</li>`).join("");
+    const items = [...flowSteps.children], dot = arch.querySelector("#dot");
+    if (reduce) { items.forEach((li) => li.classList.add("on")); return; }
+    for (let i = 0; i < flow.length; i++) {
+      if (i) items[i - 1].classList.replace("on", "done");
+      items[i].classList.add("on");
+      for (const [edge, rev, to] of flow[i].legs) {
+        await moveDot(edge, rev, g); if (g !== flowGen) return;
+        arch.querySelectorAll(".node.on").forEach((n) => n.classList.remove("on"));
+        const node = arch.querySelector("#n-" + to); if (node) node.classList.add("on");
+        await pause(380); if (g !== flowGen) return;
+      }
+      await pause(420); if (g !== flowGen) return;
+    }
+    if (dot) dot.classList.remove("on");
+  }
+  let picked = false;
+  flowBtns.forEach((b) => (b.onclick = () => { picked = true; runFlow(b.dataset.flow); }));
+  drawArch();
+  addEventListener("resize", () => { drawArch(); showPane(tabO.getAttribute("aria-selected") === "true" ? "office" : "driver"); });
+  if ("IntersectionObserver" in window && !reduce) {
+    const io = new IntersectionObserver((es) => { if (es.some((e) => e.isIntersecting)) { io.disconnect(); if (!picked) runFlow("photo"); } }, { threshold: .55 });
+    io.observe(arch);
+  }
+})();
+</script>
+</body>
+</html>

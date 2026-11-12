@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Murtaza Waqar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#f5f2ea;--ink:#1c1b18;--mute:#8c887d;--hair:#d8d3c6;--green:#1f3b2e;--card:#fffdf7}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font:18px/1.55 "Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;-webkit-font-smoothing:antialiased;font-feature-settings:"onum" 1}
+  ::selection{background:var(--green);color:var(--bg)}
+  main{max-width:31em;margin:0 auto;padding:7vh 26px 10vh;animation:arrive 1.1s ease both}
+  @keyframes arrive{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  a,button.p{color:inherit;font:inherit;background:none;border:0;cursor:pointer;text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:4px;text-decoration-color:var(--ink);transition:text-decoration-color .2s}
+  a:hover,button.p:hover,button.p[aria-expanded=true]{text-decoration-color:var(--green);color:var(--green)}
+  h1{font:inherit;font-weight:400}
+  a.rec{text-decoration:none;background:#e4e1d8;padding:.05em .1em;border-radius:2px;font-size:.92em;white-space:nowrap;transition:background .2s}
+  a.rec:before{content:"[";color:var(--mute);margin-right:.12em}
+  a.rec:after{content:"]";color:var(--mute);margin-left:.12em}
+  a.rec:hover{background:#d6d2c6;color:var(--ink)}
+  .mono{font:34px/1 "Pinyon Script","Snell Roundhand","Apple Chancery",cursive;color:var(--ink);text-decoration:none;letter-spacing:.02em;padding:4px 2px}
+  .mono:hover{color:var(--green)}
+  .head{display:flex;justify-content:space-between;align-items:center;padding-bottom:14px;border-bottom:3px double var(--hair);margin-bottom:9vh}
+  .date{font-size:13px;color:var(--mute);font-variant:small-caps;letter-spacing:.08em}
+  .hello{font-style:italic;font-size:30px;line-height:1.2;margin-bottom:.5em}
+  .ps{margin-top:2.2em;font-style:italic;color:var(--mute);font-size:16px}
+  .sign{margin-top:2.4em;font-style:italic;font-size:22px}
+  /* calling card */
+  .cardwrap{perspective:700px;margin:3.4em 0 0;display:flex;justify-content:center}
+  .calling{display:block;width:min(300px,100%);aspect-ratio:1.75;background:var(--card);border:1px solid var(--hair);text-decoration:none;color:var(--ink);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;transform:rotate(-2.5deg);transition:transform .5s ease,box-shadow .5s;
+    box-shadow:0 1px 0 #fff inset,0 10px 24px rgba(50,40,20,.10),0 2px 4px rgba(50,40,20,.08)}
+  .calling:hover{color:var(--ink);box-shadow:0 1px 0 #fff inset,0 18px 34px rgba(50,40,20,.14),0 2px 4px rgba(50,40,20,.08)}
+  .calling .n{font-variant:small-caps;letter-spacing:.14em;font-size:17px}
+  .calling .r{width:28px;border-top:1px solid var(--green)}
+  .calling .t{font-style:italic;font-size:14px;color:var(--mute)}
+  .calling .c{font-size:12.5px;color:var(--green);margin-top:8px;letter-spacing:.04em}
+  .who{color:var(--mute)}
+  p+p{margin-top:1.1em}
+  .gap{height:2.2em}
+  .brk{display:block;height:.55em}
+  .blur{filter:blur(4.5px);user-select:none;-webkit-user-select:none;pointer-events:none}
+  .wip{font-style:italic;color:var(--mute);white-space:nowrap}
+
+  /* drawers */
+  .drawer{display:grid;grid-template-rows:0fr;transition:grid-template-rows .45s ease}
+  .drawer.open{grid-template-rows:1fr}
+  .drawer>div{overflow:hidden}
+  .card{margin:1.3em 0 .4em;padding:22px 0 20px;border-top:1px solid var(--hair);border-bottom:1px solid var(--hair);font-size:15.5px;line-height:1.55}
+  .card .demo{min-height:120px;display:grid;place-items:center;margin-bottom:16px}
+  .card .meta{color:var(--mute);font-size:13.5px;margin-top:10px}
+  .card .meta a{color:var(--ink)}
+
+  /* Targa — type a plate, then open it in the real app */
+  .kcwrap{width:100%;text-align:center}
+  .scene{height:190px;perspective:800px;display:grid;place-items:center;touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none;position:relative}
+  .scene:active{cursor:grabbing}
+  .kc{--w:250px;--h:62px;--d:12px;width:var(--w);height:var(--h);position:relative;transform-style:preserve-3d;margin-left:24px}
+  .kc>*{position:absolute;backface-visibility:hidden}
+  .face{inset:0;border-radius:7px;display:flex;align-items:stretch;overflow:hidden;border:2.5px solid #0e0e0d}
+  .front{background:linear-gradient(180deg,#fbfaf6,#e9e7df);transform:translateZ(calc(var(--d)/2))}
+  .front i{width:27px;background:linear-gradient(180deg,#2a4aa6,#1b3278);color:#fff;font-style:normal;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:7px 0 6px;flex:none}
+  .front i em{font:700 10px/1 Arial,sans-serif;font-style:normal;letter-spacing:.02em}
+  .eu u{width:15px;height:15px;border:2px dotted #f5cf3a;border-radius:50%}
+  .rt u{width:17px;height:17px;border-radius:50%;background:#f5cf3a;color:#1b3278;font:700 8.5px/17px Arial,sans-serif;text-decoration:none;text-align:center}
+  .front b{flex:1;display:grid;place-items:center;font:700 28px/1 "Helvetica Neue",Arial,sans-serif;letter-spacing:.05em;color:#121211;white-space:nowrap;
+    text-shadow:0 1px 0 rgba(255,255,255,.9),0 -1px 0 rgba(0,0,0,.35),1px 2px 2px rgba(0,0,0,.18)}
+  .shine{position:absolute;inset:0;pointer-events:none;background:linear-gradient(105deg,transparent 35%,rgba(255,255,255,.75) 50%,transparent 65%);background-size:300% 100%;mix-blend-mode:soft-light}
+  .back{background:linear-gradient(160deg,#242422,#0f0f0e);transform:rotateY(180deg) translateZ(calc(var(--d)/2));align-items:center;justify-content:center}
+  .back span{width:36px;height:36px;border:1.5px solid #9a958a;border-radius:50%;display:grid;place-items:center;color:#9a958a;font:italic 14px Georgia,serif;box-shadow:0 0 0 3px #151513,0 0 0 4px #5d5a53}
+  .edge{background:linear-gradient(#2a2a28,#0c0c0b);backface-visibility:visible}
+  .edge.top,.edge.bottom{left:5px;right:5px;height:var(--d)}
+  .edge.top{top:0;transform:translateY(-50%) rotateX(90deg)}
+  .edge.bottom{bottom:0;transform:translateY(50%) rotateX(90deg)}
+  .edge.left,.edge.right{top:5px;bottom:5px;width:var(--d)}
+  .edge.left{left:0;transform:translateX(-50%) rotateY(90deg)}
+  .edge.right{right:0;transform:translateX(50%) rotateY(90deg)}
+  .link{width:16px;height:8px;border:2.5px solid #8f8a80;border-radius:5px;left:-13px;top:27px;backface-visibility:visible}
+  .loop{width:40px;height:40px;border-radius:50%;left:-48px;top:11px;backface-visibility:visible;border:5px solid #b4afa4;
+    box-shadow:inset 1.5px 1.5px 0 rgba(255,255,255,.7),inset -1px -1px 0 rgba(0,0,0,.25),1px 1px 0 rgba(0,0,0,.15)}
+  .shadow{position:absolute;left:50%;bottom:14px;width:240px;height:16px;margin-left:-120px;border-radius:50%;background:radial-gradient(closest-side,rgba(40,30,15,.28),transparent);pointer-events:none}
+  .fields{display:flex;justify-content:center;gap:16px;margin-top:2px}
+  .fields label{display:flex;flex-direction:column;align-items:center}
+  .fields input{border:0;border-bottom:1px solid var(--ink);outline:0;background:transparent;text-align:center;text-transform:uppercase;font:600 18px/1.7 "Helvetica Neue",Arial,sans-serif;letter-spacing:.08em;color:var(--ink);border-radius:0;width:2.6em}
+  .fields #plateIn{width:7.6em}
+  .fields input:focus{border-color:var(--green)}
+  .fields span{font-size:11.5px;color:var(--mute);font-variant:small-caps;letter-spacing:.08em;margin-top:3px}
+  .tip{font-size:12.5px;color:var(--mute);margin-top:12px}
+  .make{display:block;margin:14px auto 0;font:italic 16px/1 "Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;color:var(--ink);text-align:center}
+  .make span{border-bottom:1px solid var(--ink);padding-bottom:1px}
+  .make:hover span{opacity:.55}
+
+  /* Driver Bot — messages typing */
+  .chat{width:100%;max-width:300px;font:14px/1.35 "Helvetica Neue",Arial,sans-serif}
+  .msg{padding:6px 10px;border-radius:12px;margin:5px 0;width:fit-content;max-width:85%;opacity:0;transform:translateY(4px);transition:all .35s}
+  .msg.show{opacity:1;transform:none}
+  .msg.bot{background:#ebe9e3}
+  .msg.drv{background:var(--ink);color:var(--bg);margin-left:auto}
+  .dots span{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--mute);margin:0 1.5px;animation:d 1s infinite}
+  .dots span:nth-child(2){animation-delay:.15s}.dots span:nth-child(3){animation-delay:.3s}
+  @keyframes d{50%{opacity:.2}}
+
+  footer{margin-top:3.2em;display:flex;justify-content:space-between;font-size:14px;color:var(--mute)}
+
+  @media (max-width:520px){body{font-size:17px}main{padding-top:10vh}}
+  .calling.v{transform:none;font:12px/1.4 "Helvetica Neue",Helvetica,Arial,sans-serif;letter-spacing:.02em;position:relative;align-items:stretch;justify-content:flex-start;gap:0}
+  .v .tl,.v .tr,.v .bl,.v .br{position:absolute}.v .tl{left:18px;top:16px}.v .tr{right:18px;top:16px}.v .bl{left:18px;bottom:14px}.v .br{right:18px;bottom:14px}
+  .v2{background:#141412!important;color:#e9e5da!important;border:0!important;box-shadow:0 16px 30px rgba(0,0,0,.22)!important}
+  .v2 .tr{color:#77736a}.v2 .bl{font-size:13px}
+  .v3{background:transparent!important;border:1px solid var(--ink)!important;box-shadow:none!important}
+  .v3 .mid{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);white-space:nowrap;font:italic 24px "Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;letter-spacing:0}
+  .v3:hover{background:var(--card)!important}
+  .v4{aspect-ratio:auto!important;width:min(290px,100%)!important;background:#fff!important;border:0!important;padding:16px 18px 18px;display:block!important;line-height:1.5!important;box-shadow:0 1px 0 var(--hair),0 8px 18px rgba(50,40,20,.08)!important}
+  .v4 b{font-weight:700;font-size:14px;display:block}.v4 i{font-size:14px}.v4 small{display:block;color:#6f6b62;margin-top:6px;font-size:11.5px}
+  .calling.v3{width:266px!important;font-size:11.5px}
+  .v3 .tl{left:14px;top:12px}.v3 .tr{right:14px;top:12px}.v3 .br{right:14px;bottom:10px}
+  .cardwrap{margin-top:3em!important}
+</style>
+</head>
+<body>
+<main>
+  <div class="head"><a class="mono" href="index.html" aria-label="Murtaza Waqar, home">M.W.</a></div>
+
+  <h1 class="hello" id="hello">Good evening.</h1>
+  <p>My name is Murtaza Waqar. I'm a student, and I build tools that real businesses use.</p>
+
+  <p>I have three projects at the moment.</p>
+
+  <p><button class="p" data-d="targa" aria-expanded="false">Targa</button> makes 3D-printable number plate keychains in your browser.<span class="brk"></span>
+     <button class="p" data-d="driver" aria-expanded="false">Driverbot</button> is a WhatsApp assistant that handles the daily vehicle checks for a fleet of 40 delivery vans in Italy. <a class="rec" href="driver-bot.html">I recommend this page.</a><span class="brk"></span>
+     Hush is what I'm making now: <span class="blur" aria-hidden="true">an AI receptionist that answers the phone for pest control companies.</span> <span class="wip">[in progress]</span></p>
+
+  <div class="drawer" id="targa"><div><div class="card">
+    <form class="demo" id="plateForm">
+      <div class="kcwrap">
+        <div class="scene" id="scene" aria-label="3D keychain preview. Drag to turn it.">
+          <div class="kc" id="kc">
+            <div class="face front">
+              <i class="eu"><u></u><em>I</em></i>
+              <b id="kcText">AB 123 CD</b>
+              <i class="rt"><u id="kcYear">08</u><em id="kcProv">MI</em></i>
+              <span class="shine" id="shine"></span>
+            </div>
+            <div class="face back"><span>MW</span></div>
+            <div class="edge top"></div><div class="edge bottom"></div><div class="edge left"></div><div class="edge right"></div>
+            <div class="link"></div><div class="loop"></div>
+          </div>
+          <div class="shadow" id="shadow"></div>
+        </div>
+        <div class="fields">
+          <label><input id="plateIn" value="AB 123 CD" maxlength="9" aria-label="Number plate" spellcheck="false" autocomplete="off"><span>Plate</span></label>
+          <label><input id="provIn" value="MI" maxlength="2" aria-label="Province" spellcheck="false" autocomplete="off"><span>Province</span></label>
+          <label><input id="yearIn" value="08" maxlength="2" inputmode="numeric" aria-label="Year" autocomplete="off"><span>Year</span></label>
+        </div>
+        <p class="tip">Change the plate. Flick the keychain to spin it.</p>
+        <a class="make" id="make" href="https://waqarmmurtaza-dev.github.io/hiway-keychain/?targa=AB%20123%20CD" target="_blank" rel="noopener"><span>Make the file for a 3D printer ↗</span></a>
+      </div>
+    </form>
+    You type an Italian number plate. The web app makes a 3D model of the keychain. You can send the file directly to a 3D printer.
+    <p class="meta">JavaScript, Three.js, 3MF. Live.</p>
+  </div></div></div>
+
+  <div class="drawer" id="driver"><div><div class="card">
+    <div class="demo"><div class="chat" id="chat"></div></div>
+    Drivers do not need a new app. The bot asks for photos of the van and the load. It reads the ETA from a screenshot. It uses GPS to tell the office when the van arrives.
+    <p class="meta">Python, Flask, Claude, WhatsApp Cloud API, Geotab, Supabase. Built and tested. <a href="driver-bot.html">See the full page and try the demo →</a></p>
+  </div></div></div>
+
+  <p style="margin-top:1.1em">I use AI to help me write code, and I test and fix each tool myself.</p>
+
+  <p>My code is on <a href="https://github.com/murtaza-waqar-257" target="_blank" rel="noopener">GitHub</a>. To talk to me, take my card.</p>
+
+
+  <div class="cardwrap"><a class="calling v v3" id="calling" href="about.html"><span class="tl">Murtaza</span><span class="tr">N. 001</span><span class="mid">Say hello.</span><span class="br">→</span></a></div>
+</main>
+
+<script>
+  // a host greets you by the hour
+  const now=new Date(), h=now.getHours();
+  document.getElementById('hello').textContent=(h<5?'Good evening.':h<12?'Good morning.':h<18?'Good afternoon.':'Good evening.');
+  // the card tilts under your finger
+  const cc=document.getElementById('calling');
+  cc.addEventListener('pointermove',e=>{const r=cc.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;cc.style.transform=`rotateY(${x*14}deg) rotateX(${-y*14}deg)`});
+  cc.addEventListener('pointerleave',()=>cc.style.transform='');
+
+  const btns=[...document.querySelectorAll('button.p')];
+  let chatTimer=[];
+
+  btns.forEach(b=>b.addEventListener('click',()=>{
+    const id=b.dataset.d, d=document.getElementById(id), open=!d.classList.contains('open');
+    btns.forEach(o=>{o.setAttribute('aria-expanded','false');document.getElementById(o.dataset.d).classList.remove('open')});
+    chatTimer.forEach(clearTimeout);chatTimer=[];
+    if(open){d.classList.add('open');b.setAttribute('aria-expanded','true');
+      if(id==='driver')runChat(); }
+  }));
+
+  // Targa: the plate you type goes to the real app
+  const APP='https://waqarmmurtaza-dev.github.io/hiway-keychain/';
+  const $=id=>document.getElementById(id);
+  const plateIn=$('plateIn'), provIn=$('provIn'), yearIn=$('yearIn'), make=$('make');
+  function sync(){
+    const t=plateIn.value.trim().toUpperCase(), p=provIn.value.trim().toUpperCase(), y=yearIn.value.replace(/\D/g,'');
+    $('kcText').textContent=t||' '; $('kcProv').textContent=p; $('kcYear').textContent=y; $('kcYear').style.visibility=y?'visible':'hidden';
+    make.href=APP+'?targa='+encodeURIComponent(t||'AB 123 CD')+'&prov='+encodeURIComponent(p)+'&anno='+encodeURIComponent(y);
+  }
+  [plateIn,provIn,yearIn].forEach(i=>i.addEventListener('input',sync)); sync();
+  $('plateForm').addEventListener('submit',e=>{e.preventDefault();sync();make.click()});
+
+  // the keychain turns slowly; flick it and it keeps the spin
+  const kc=$('kc'),scene=$('scene'),shine=$('shine'),shadow=$('shadow');
+  let ry=-30,rx=-14,v=.35,drag=null,lastX=0,t0=0;
+  (function spin(t){
+    if($('targa').classList.contains('open')){
+      if(!drag){ ry+=v; v+=(.35*Math.sign(v||1)-v)*.02; }
+      const bob=Math.sin(t/900)*4;
+      kc.style.transform=`translateY(${bob}px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+      shine.style.backgroundPosition=(50+Math.sin(ry*Math.PI/180)*80)+'% 0';
+      const c=Math.abs(Math.cos(ry*Math.PI/180));
+      shadow.style.transform=`scaleX(${.25+.75*c}) scale(${1-bob/60})`;
+    }
+    requestAnimationFrame(spin);
+  })(0);
+  scene.addEventListener('pointerdown',e=>{drag={x:e.clientX,y:e.clientY,ry,rx};lastX=e.clientX;v=0;scene.setPointerCapture(e.pointerId)});
+  scene.addEventListener('pointermove',e=>{if(!drag)return;ry=drag.ry+(e.clientX-drag.x)*.6;rx=Math.max(-55,Math.min(55,drag.rx-(e.clientY-drag.y)*.4));v=(e.clientX-lastX)*.6;lastX=e.clientX});
+  const end=()=>{if(!drag)return;drag=null;v=Math.max(-40,Math.min(40,v))||.35};
+  scene.addEventListener('pointerup',end);scene.addEventListener('pointercancel',end);
+
+  // Driver Bot
+  const script=[['bot','Good morning Marco. Send a photo of the van.'],['drv','📷'],['bot','The van is OK. Now the load.'],['drv','📷'],['bot','Received. I will tell the office when you arrive.']];
+  function runChat(){
+    const c=document.getElementById('chat'); c.innerHTML=''; let t=300;
+    script.forEach(([who,txt])=>{
+      if(who==='bot'){
+        chatTimer.push(setTimeout(()=>{const m=document.createElement('div');m.className='msg bot show dots';m.innerHTML='<span></span><span></span><span></span>';m.id='typing';c.appendChild(m)},t));
+        t+=900;
+        chatTimer.push(setTimeout(()=>{const ty=document.getElementById('typing');if(ty)ty.remove();add(c,who,txt)},t));
+      } else chatTimer.push(setTimeout(()=>add(c,who,txt),t));
+      t+=800;
+    });
+  }
+  function add(c,who,txt){const m=document.createElement('div');m.className='msg '+who;m.textContent=txt;c.appendChild(m);requestAnimationFrame(()=>m.classList.add('show'))}
+</script>
+</body>
+</html>

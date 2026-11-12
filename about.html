@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Contact — Murtaza Waqar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&display=swap" rel="stylesheet">
+<style>
+  :root{--green:#1f3b2e;--bg:#f5f2ea;--ink:#1c1b18;--mute:#8c887d;--line:#d9d7d0;--acc:#1a1a18;--paper:#fffefb}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{overflow-x:hidden}
+  body{background:var(--bg);color:var(--ink);font:16px/1.55 "Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;-webkit-font-smoothing:antialiased}
+  ::selection{background:var(--acc);color:var(--bg)}
+  a{color:inherit;text-decoration:none}
+  button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+  .serif{font-family:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;font-weight:400}
+  .wrap{max-width:31em;margin:0 auto;padding:0 24px}
+  .mute{color:var(--mute)}
+  .label{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--mute)}
+
+  nav{display:flex;justify-content:space-between;align-items:baseline;padding:26px 0}
+  nav .mark{font:italic 22px "Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif}
+  nav .links{display:flex;gap:22px}
+  nav .links a{color:var(--mute)} nav .links a:hover,nav .links a.on{color:var(--ink)}
+
+  header{padding:40px 0 30px;text-align:center}
+  header h1{font-size:clamp(46px,8.5vw,92px);line-height:.95;letter-spacing:-.015em;margin-top:14px}
+  header h1 i{color:var(--acc)}
+  header p{margin:18px auto 0;max-width:36ch;font:italic 20px/1.35 "Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;color:var(--mute)}
+
+  .top{max-width:31em;margin:0 auto;padding:7vh 2px 30px;font-size:18px}
+  .top .back{font-size:14px;color:var(--mute);text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:3px}
+  .top h1{font:inherit;margin-top:2.4em}
+  .stage{position:relative;min-height:560px;display:grid;place-items:start center;padding:10px 0 50px}
+
+  /* the sheet of paper */
+  .sheet{width:min(460px,100%);background:var(--paper);padding:30px 28px 24px;position:relative;
+    box-shadow:0 1px 0 var(--line),0 18px 40px rgba(40,30,20,.10);transform:rotate(-1.2deg);transition:transform .4s;
+    background-image:repeating-linear-gradient(transparent 0 31px,#ece6da 31px 32px);background-position:0 70px}
+  .sheet:hover{transform:rotate(-.4deg)}
+  .sheet:before{content:"";position:absolute;left:44px;top:0;bottom:0;width:1px;background:rgba(107,42,34,.25)}
+  .sheet .to{font:italic 22px "Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;margin:0 0 14px 28px}
+  .sheet label{display:block;margin-left:28px}
+  .sheet input,.sheet textarea{width:100%;font:22px/32px "Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;background:transparent;border:0;outline:none;color:var(--ink);resize:none;padding:0}
+  .sheet input::placeholder,.sheet textarea::placeholder{color:#b8b0a2;font-style:italic}
+  .sheet textarea{height:160px}
+  .sheet .from{display:flex;gap:10px;align-items:baseline}
+  .sheet .from span{font:italic 22px "Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;color:var(--mute);white-space:nowrap}
+  .sheet .err{margin:8px 0 0 28px;color:var(--acc);min-height:20px}
+  .fold-btn{display:block;margin:10px auto 0;font:italic 18px/1 "Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;border-bottom:1px solid var(--ink);padding:2px 0}
+  .fold-btn:hover{opacity:.55}
+
+  /* folding */
+  .sheet.folding{animation:fold 1s cubic-bezier(.6,0,.4,1) forwards;pointer-events:none}
+  @keyframes fold{
+    0%{transform:rotate(-1.2deg)}
+    35%{transform:perspective(900px) rotateX(55deg) scaleY(.55) rotate(-1.2deg)}
+    70%{transform:perspective(900px) rotateX(70deg) rotateZ(-30deg) scale(.35);opacity:1}
+    100%{transform:perspective(900px) rotateX(80deg) rotateZ(-45deg) scale(.12);opacity:0}}
+
+  /* the plane */
+  .plane-zone{position:absolute;inset:0;display:none;place-items:center;flex-direction:column}
+  .plane-zone.on{display:flex;justify-content:center;gap:18px}
+  .plane{width:170px;touch-action:none;cursor:grab;filter:drop-shadow(0 18px 14px rgba(40,30,20,.18));animation:appear .6s ease-out both, bob 2.6s ease-in-out .6s infinite}
+  .plane:active{cursor:grabbing}
+  @keyframes appear{from{opacity:0;transform:scale(.4) rotate(-30deg)}to{opacity:1;transform:none}}
+  @keyframes bob{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-10px) rotate(2deg)}}
+  .plane.dragging{animation:none}
+  .throw-hint{font:italic 20px "Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;color:var(--mute);text-align:center}
+  .throw-hint b{font-weight:400;color:var(--ink)}
+  .arrow{animation:nudge 1.4s ease-in-out infinite;display:inline-block}
+  @keyframes nudge{50%{transform:translate(6px,-6px)}}
+
+  .flying{position:fixed;z-index:20;width:120px;pointer-events:none;left:0;top:0}
+  svg.trail{position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:19}
+  svg.trail path{fill:none;stroke:var(--acc);stroke-width:1.3;stroke-dasharray:3 7;opacity:.55}
+
+  /* after the flight */
+  .landed{display:none;text-align:center;max-width:460px;margin:0 auto;animation:fadeup .8s both}
+  .landed.on{display:block}
+  @keyframes fadeup{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  .landed h2{font-size:30px;line-height:1.1;font-weight:400}
+  .landed h2 i{color:var(--acc)}
+  .landed .count{margin-top:10px}
+  .btns{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:24px}
+  .btn{background:var(--ink);color:var(--bg);padding:11px 18px;transition:background .2s}
+  .btn:hover{background:var(--acc)}
+  .btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--ink)}
+  .btn.ghost:hover{background:var(--ink);color:var(--bg)}
+  .addr{margin-top:14px}
+  .again{margin-top:22px;color:var(--mute);border-bottom:1px solid var(--line)}
+  .again:hover{color:var(--ink)}
+
+  footer{display:flex;justify-content:space-between;font-size:14px;color:var(--mute);padding:10px 0 12vh}
+  .sig{font:26px "Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif}
+
+  @media (max-width:680px){
+    header{padding:20px 0 24px}
+    .sheet{padding:24px 18px 20px}
+    .sheet:before{left:30px}
+    .sheet .to,.sheet label,.sheet .err{margin-left:20px}
+    .top{max-width:31em;margin:0 auto;padding:7vh 2px 30px;font-size:18px}
+  .top .back{font-size:14px;color:var(--mute);text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:3px}
+  .top h1{font:inherit;margin-top:2.4em}
+  .stage{min-height:520px}
+    nav .links a:first-child{display:none}
+  }
+  .mono{font:34px/1 "Pinyon Script","Snell Roundhand","Apple Chancery",cursive;color:var(--ink);text-decoration:none;letter-spacing:.02em;padding:4px 2px}
+  .mono:hover{color:var(--green)}
+  .hd{display:flex;justify-content:space-between;align-items:center;padding-bottom:14px;border-bottom:3px double #d8d3c6}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div class="hd"><a class="mono" href="index.html" aria-label="Murtaza Waqar, home">M.W.</a><a class="back" href="index.html">← Back</a></div>
+    <h1>Send me a paper plane.</h1>
+    <p class="mute">Write a note. Fold it. Then throw it to me.</p>
+  </div>
+
+  <section class="stage" id="stage">
+    <form class="sheet" id="sheet" autocomplete="off">
+      <p class="to">Dear Murtaza,</p>
+      <label><textarea id="note" maxlength="600" placeholder="I have an idea…"></textarea></label>
+      <label class="from"><span>From,</span><input id="name" maxlength="40" placeholder="your name"></label>
+      <label class="from"><span>Reply to</span><input id="reply" maxlength="80" placeholder="email or phone"></label>
+      <p class="err" id="err"></p>
+      <button class="fold-btn" type="submit">Fold it into a plane</button>
+    </form>
+
+    <div class="plane-zone" id="zone">
+      <svg class="plane" id="plane" viewBox="0 0 200 120" aria-label="Paper plane — drag and release to throw it">
+        <polygon points="6,62 196,8 74,74" fill="#fdfcf8" stroke="#16130f" stroke-width="1.4" stroke-linejoin="round"/>
+        <polygon points="74,74 196,8 92,112" fill="#efe9de" stroke="#16130f" stroke-width="1.4" stroke-linejoin="round"/>
+        <polygon points="74,74 92,112 80,88" fill="#d9d1c3" stroke="#16130f" stroke-width="1.4" stroke-linejoin="round"/>
+        <line x1="74" y1="74" x2="196" y2="8" stroke="#6b2a22" stroke-width="1"/>
+      </svg>
+      <p class="throw-hint"><b>Drag the plane and let go</b> to throw it <span class="arrow">↗</span><br><span style="font-size:15px">or <button id="tapThrow" style="text-decoration:underline">tap here</button></span></p>
+    </div>
+
+    <div class="landed" id="landed">
+      
+      <h2 class="serif">Nice throw, <span id="who">friend</span>.</h2>
+      <p class="mute count" id="count"></p>
+      <p style="margin-top:18px">Your plane is in the air. Send it to my inbox so I can catch it.</p>
+      <div class="btns">
+        <a class="btn" id="mail" href="#">Land it in my inbox</a>
+        <button class="btn ghost" id="copy">Copy the note</button>
+      </div>
+      <p class="addr mute" id="addr"></p>
+      <button class="again" id="again">Fold another plane</button>
+    </div>
+  </section>
+
+  <footer><span>— M.W.</span><span>2026</span></footer>
+</div>
+
+<script>
+  // Put your email address here to switch on the "Land it in my inbox" button.
+  const EMAIL = '';
+
+  const $ = id => document.getElementById(id);
+  let text = '', name = '';
+
+  $('sheet').addEventListener('submit', e => {
+    e.preventDefault();
+    const note = $('note').value.trim(); name = $('name').value.trim(); const reply = $('reply').value.trim();
+    if (!note) return $('err').textContent = 'The plane needs a note.';
+    if (!name) return $('err').textContent = 'Sign your name.';
+    if (!reply) return $('err').textContent = 'Tell me how I can reply.';
+    $('err').textContent = '';
+    text = `Dear Murtaza,\n\n${note}\n\nFrom, ${name}\nReply to: ${reply}`;
+    $('sheet').classList.add('folding');
+    setTimeout(() => { $('sheet').style.display = 'none'; $('zone').classList.add('on'); }, 950);
+  });
+
+  // ---- throwing ----
+  const plane = $('plane');
+  let start = null, last = null, dragging = false;
+
+  plane.addEventListener('pointerdown', e => {
+    dragging = true; plane.setPointerCapture(e.pointerId); plane.classList.add('dragging');
+    start = last = {x: e.clientX, y: e.clientY, t: performance.now()};
+  });
+  plane.addEventListener('pointermove', e => {
+    if (!dragging) return;
+    const dx = e.clientX - start.x, dy = e.clientY - start.y;
+    plane.style.transform = `translate(${dx}px,${dy}px) rotate(${Math.max(-30, Math.min(30, dx / 6))}deg)`;
+    last = {x: e.clientX, y: e.clientY, t: performance.now(), px: last.x, py: last.y, pt: last.t};
+  });
+  plane.addEventListener('pointerup', e => {
+    if (!dragging) return; dragging = false;
+    let vx = 1, vy = -0.6;
+    if (last && last.pt) {
+      const dt = Math.max(16, last.t - last.pt);
+      vx = (last.x - last.px) / dt; vy = (last.y - last.py) / dt;
+    }
+    const moved = Math.hypot(e.clientX - start.x, e.clientY - start.y);
+    if (moved < 12 || Math.hypot(vx, vy) < .15) { vx = 1; vy = -0.6; } // a tap = a gentle throw
+    launch(vx, vy);
+  });
+  $('tapThrow').addEventListener('click', () => launch(1, -0.6));
+
+  function launch(vx, vy) {
+    const r = plane.getBoundingClientRect();
+    $('zone').classList.remove('on'); plane.style.transform = ''; plane.classList.remove('dragging');
+
+    const W = innerWidth, H = innerHeight;
+    const sx = r.left + r.width / 2, sy = r.top + r.height / 2;
+    const len = Math.hypot(vx, vy) || 1; const ux = vx / len, uy = vy / len;
+    // a loop-the-loop, then away in the direction of the throw
+    const p = [];
+    const loopR = Math.min(W, H) * .16, cx = sx + ux * 140, cy = sy + uy * 140 - loopR;
+    for (let i = 0; i <= 12; i++) p.push([sx + (cx - sx) * i / 12, sy + (cy + loopR - sy) * i / 12]);
+    for (let a = 0; a <= 360; a += 20) { const t = (a + 90) * Math.PI / 180; p.push([cx + Math.cos(t) * loopR * (ux >= 0 ? -1 : 1), cy + Math.sin(t) * loopR]); }
+    const ex = cx + ux * (W + 400), ey = cy + loopR + uy * (H + 400) - H * .3;
+    for (let i = 1; i <= 14; i++) p.push([p[p.length - 1][0] + (ex - p[p.length - 1][0]) * i / 14 * .3, p[p.length - 1][1] + (ey - p[p.length - 1][1]) * i / 14 * .3 + Math.sin(i / 2) * 6]);
+
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg'); svg.setAttribute('class', 'trail');
+    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    path.setAttribute('d', 'M' + p.map(q => q.map(Math.round).join(' ')).join(' L ')); svg.appendChild(path); document.body.appendChild(svg);
+
+    const fly = plane.cloneNode(true); fly.removeAttribute('id'); fly.setAttribute('class', 'flying'); document.body.appendChild(fly);
+    const frames = p.map((q, i) => {
+      const n = p[Math.min(i + 1, p.length - 1)], pr = p[Math.max(i - 1, 0)];
+      const ang = Math.atan2(n[1] - pr[1], n[0] - pr[0]) * 180 / Math.PI + 18;
+      return {transform: `translate(${q[0] - 60}px,${q[1] - 36}px) rotate(${ang}deg)`};
+    });
+    const anim = fly.animate(frames, {duration: 2600, easing: 'cubic-bezier(.3,.1,.5,1)', fill: 'forwards'});
+    anim.onfinish = () => {
+      fly.remove(); svg.animate([{opacity: 1}, {opacity: 0}], {duration: 900, fill: 'forwards'}).onfinish = () => svg.remove();
+      land();
+    };
+  }
+
+  function land() {
+    let n = 1; try { n = (+localStorage.getItem('planes') || 0) + 1; localStorage.setItem('planes', n); } catch (e) {}
+    $('who').textContent = name.split(' ')[0] || 'friend';
+    $('count').textContent = n === 1 ? 'Your first plane.' : `Plane number ${n} from you. You are a pilot now.`;
+    if (EMAIL) {
+      $('mail').href = 'mailto:' + EMAIL + '?subject=' + encodeURIComponent('A paper plane from ' + name) + '&body=' + encodeURIComponent(text);
+      $('addr').textContent = 'If the button does not open your email app, send the note to ' + EMAIL + '.';
+    } else {
+      $('mail').style.display = 'none';
+      $('addr').innerHTML = 'Copy the note and send it to me on <a href="https://github.com/murtaza-waqar-257" target="_blank" rel="noopener" style="border-bottom:1px solid var(--line)">GitHub ↗</a>.';
+    }
+    $('landed').classList.add('on');
+  }
+
+  $('copy').onclick = async () => {
+    try { await navigator.clipboard.writeText(text); $('copy').textContent = 'Copied ✓'; }
+    catch (e) { $('copy').textContent = 'Could not copy'; }
+    setTimeout(() => $('copy').textContent = 'Copy the note', 2000);
+  };
+  $('again').onclick = () => {
+    $('landed').classList.remove('on'); $('note').value = '';
+    const s = $('sheet'); s.classList.remove('folding'); s.style.display = ''; $('note').focus();
+  };
+</script>
+</body>
+</html>
