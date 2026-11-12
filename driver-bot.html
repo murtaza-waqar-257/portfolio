@@ -26,7 +26,7 @@
   --asphalt: #1E2428;
   --asphalt-2: #2A3137;
   --lane: #F2C230;
-  --ok: #1F8A5B;
+  --ok: #17714A;
   --display: "Archivo", "Arial Narrow", Arial, sans-serif;
   --serif: "Source Serif 4", Georgia, serif;
   --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
@@ -76,7 +76,7 @@ h1 .w > span { display: inline-block; transform: translateY(108%); animation: ri
 .actions { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
 .btn { display: inline-block; font-family: var(--display); font-weight: 700; font-size: 17px; border-radius: 999px; padding: 15px 26px; text-decoration: none; border: 2px solid var(--ink); cursor: pointer; transition: transform .15s ease, background .15s ease; }
 .btn.primary { background: var(--ink); color: var(--paper-2); }
-.btn.primary:hover { background: #24313E; transform: translateY(-1px); }
+.btn.primary:hover { background: #24313E; }
 .btn.ghost { background: transparent; color: var(--ink); }
 .btn.ghost:hover { background: rgba(23, 33, 43, .06); }
 .byline { margin-top: 36px; font-family: var(--display); font-size: 15px; color: var(--ink-2); }
@@ -94,7 +94,7 @@ h1 .w > span { display: inline-block; transform: translateY(108%); animation: ri
 .readout b { display: block; font-family: var(--mono); font-weight: 500; font-size: 30px; line-height: 1.1; color: var(--ink); font-variant-numeric: tabular-nums; letter-spacing: -.02em; }
 #route { width: 100%; height: auto; display: block; }
 .stamp { position: absolute; left: 44%; top: 176px; transform: translateX(-50%) rotate(-9deg) scale(1.5); opacity: 0; border: 3px solid var(--stamp); color: var(--stamp); font-family: var(--display); font-weight: 900; font-stretch: 112%; font-size: 20px; padding: 4px 12px; border-radius: 6px; letter-spacing: .04em; mix-blend-mode: multiply; white-space: nowrap; pointer-events: none; }
-.stamp.on { animation: stamp .35s cubic-bezier(.2, 1.6, .4, 1) forwards; }
+.stamp.on { animation: stamp .35s var(--ease) forwards; }
 @keyframes stamp { to { opacity: .85; transform: translateX(-50%) rotate(-9deg) scale(1); } }
 .tlog { list-style: none; margin: 4px 0 0; padding: 0; min-height: 132px; position: relative; }
 .tlog li { display: grid; grid-template-columns: 22px 52px 1fr; gap: 8px; align-items: baseline; font-family: var(--display); font-size: 14.5px; padding: 4px 0; border-bottom: 1px dashed var(--rule); opacity: 0; transform: translateY(4px); transition: opacity .35s, transform .35s; }
@@ -164,7 +164,7 @@ h1 .w > span { display: inline-block; transform: translateY(108%); animation: ri
 .office .chat-top { background: #22313D; }
 .avatar { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; background: rgba(255, 255, 255, .18); font-weight: 800; font-size: 14px; flex: none; }
 .chat-top b { display: block; font-size: 15px; line-height: 1.3; }
-.chat-top small { font-size: 12px; opacity: .8; }
+.chat-top small { font-size: 12px; color: #D3E0DC; }
 .msgs { flex: 1; overflow-y: auto; padding: 14px 12px; display: flex; flex-direction: column; gap: 8px; scroll-behavior: smooth; overscroll-behavior: contain; }
 .msg { max-width: 86%; padding: 8px 11px 6px; border-radius: 10px; font-family: -apple-system, "Helvetica Neue", Arial, sans-serif; font-size: 14.5px; line-height: 1.42; color: #111B21; animation: pop .26s var(--ease); }
 @keyframes pop { from { opacity: 0; transform: translateY(8px) scale(.97); } }
@@ -172,7 +172,7 @@ h1 .w > span { display: inline-block; transform: translateY(108%); animation: ri
 .msg.out { align-self: flex-end; background: #D9FDD3; border-top-right-radius: 3px; }
 .msg .en { display: block; font-size: 12.5px; color: #54656F; margin-top: 3px; font-style: italic; }
 .msg .t { display: block; text-align: right; font-size: 11px; color: #667781; margin-top: 2px; }
-.msg.alert { align-self: stretch; max-width: 100%; background: #fff; border-left: 4px solid var(--hivis); border-radius: 6px; animation: pop .26s var(--ease), flash 1.4s ease-out; }
+.msg.alert { align-self: stretch; max-width: 100%; background: #fff; border-radius: 6px; animation: pop .26s var(--ease), flash 1.4s ease-out; }
 @keyframes flash { from { background: #FFE9DA; } }
 .msg.alert .tag { font-family: var(--display); font-weight: 800; font-size: 12px; color: var(--hivis); }
 .msg.alert.good { border-left-color: var(--ok); } .msg.alert.good .tag { color: var(--ok); }
@@ -194,14 +194,14 @@ h1 .w > span { display: inline-block; transform: translateY(108%); animation: ri
 .typing i:nth-child(2) { animation-delay: .15s; } .typing i:nth-child(3) { animation-delay: .3s; }
 @keyframes dot { 0%, 60%, 100% { opacity: .3; } 30% { opacity: 1; } }
 .sys { align-self: center; background: #FFF5C4; color: #54656F; font-family: var(--display); font-size: 12.5px; line-height: 1.4; border-radius: 8px; padding: 5px 10px; text-align: center; max-width: 90%; animation: pop .26s var(--ease); }
-.empty { margin: auto; text-align: center; color: #6C7A84; font-family: var(--display); font-size: 14px; padding: 0 24px; }
+.empty { margin: auto; text-align: center; color: #4F5D67; font-family: var(--display); font-size: 14px; padding: 0 24px; }
 .composer { display: flex; gap: 8px; padding: 8px; background: #F0F2F5; border-top: 1px solid #D7DCE0; }
 .send { flex: 1; display: flex; align-items: center; justify-content: space-between; gap: 10px; background: #fff; border: 0; border-radius: 22px; padding: 6px 6px 6px 14px; font-family: var(--display); font-weight: 700; font-size: 15px; line-height: 1.25; color: #111B21; cursor: pointer; text-align: left; min-height: 46px; }
 .send .go { flex: none; width: 34px; height: 34px; border-radius: 50%; background: #1F8A5B; display: grid; place-items: center; transition: background .15s, transform .15s; }
 .send .go svg { width: 16px; height: 16px; }
 .send:disabled { color: #8696A0; cursor: default; }
 .send:disabled .go { background: #A9B4BB; }
-.send:not(:disabled):hover .go { background: #19734B; transform: scale(1.06); }
+.send:not(:disabled):hover .go { background: #19734B; }
 .send:not(:disabled):active .go { transform: scale(.94); }
 .phone-label { text-align: center; font-family: var(--display); font-size: 14px; color: #8D9AA4; margin-top: 12px; }
 
@@ -269,7 +269,10 @@ h1 .w > span { display: inline-block; transform: translateY(108%); animation: ri
 .contact a.main { background: var(--hivis); border-color: var(--hivis); color: #1B0E05; }
 footer { background: var(--ink); color: #8D9AA4; }
 footer .wrap { border-top: 1px solid #33414E; padding: 22px 0 34px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; font-family: var(--display); font-size: 14px; }
-footer a { color: #B8C3CB; text-decoration: none; }
+footer a { color: #B8C3CB; text-decoration: none; display: inline-block; padding: 12px 0; }
+footer :focus-visible { outline-color: var(--lane); }
+.send:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+.composer { padding: 10px; }
 
 /* ---------- responsive ---------- */
 @media (max-width: 1020px) {
@@ -691,18 +694,18 @@ footer a { color: #B8C3CB; text-decoration: none; }
       await bot("Buongiorno Marco! 🚚 Prima di tutto mandami 4 foto del furgone DV 248 KR: davanti, dietro, lato sinistro, lato destro 📸",
                 "Good morning, Marco! First, send 4 photos of the van: front, back, left side and right side.");
     }},
-    { label: "Send 4 van photos", send: "📷 Send 4 van photos", at: "07:06", rail: 0, run: async () => {
+    { label: "Send 4 van photos", send: "Send 4 van photos", at: "07:06", rail: 0, run: async () => {
       media(photos(true));
       await bot("Targa DV 248 KR ✅ Ho notato un graffio nuovo sul lato sinistro, l'ho segnalato all'officina. Ora mandami la bolla e una foto del carico 📄📦",
                 "The plate is correct. There is a new scratch on the left side. I told the workshop. Now send the delivery note and a photo of the load.");
       office("work", "Workshop", "New scratch on the left side of DV 248 KR. This scratch is not in the photos from yesterday. The bot saved the photos.");
     }},
-    { label: "Send the delivery note", send: "📄 Send the delivery note", at: "07:15", rail: 0, run: async () => {
+    { label: "Send the delivery note", send: "Send the delivery note", at: "07:15", rail: 0, run: async () => {
       media(note(false));
       await bot("Bolla n. 4521/2026 letta ✅ Manca ancora la firma del cliente: ricordati di farla firmare alla consegna ✍️ Ora mandami lo screenshot di Google Maps con l'orario di arrivo 🗺️",
                 "I read delivery note 4521/2026. The customer did not sign it yet. Get a signature at the delivery. Now send a Google Maps screenshot with your arrival time.");
     }},
-    { label: "Send a Maps screenshot", send: "🗺️ Send the Maps screenshot", at: "07:21", rail: 6, run: async () => {
+    { label: "Send a Maps screenshot", send: "Send the Maps screenshot", at: "07:21", rail: 6, run: async () => {
       media(maps);
       await bot("Arrivo previsto alle 11:40 🕚 L'appuntamento è entro le 11:00, avviso l'ufficio. Buon viaggio!",
                 "Your arrival time is 11:40. The appointment is at 11:00 or before. I will tell the office. Drive safely.");
@@ -724,13 +727,13 @@ footer a { color: #B8C3CB; text-decoration: none; }
                 "You are in Bergamo. The GPS shows this. Send a photo of the signed delivery note.");
       office("good", "Traffic", "Marco arrived in Bergamo at 11:43. The GPS showed this when the van parked.");
     }},
-    { label: "Send the signed note", send: "📄 Send the signed note", at: "11:47", rail: 100, run: async () => {
+    { label: "Send the signed note", send: "Send the signed note", at: "11:47", rail: 100, run: async () => {
       media(note(true));
       await bot("Bolla 4521/2026 firmata ✅ Consegna completata. Buon rientro!",
                 "Delivery note 4521/2026 has a signature. The delivery is complete. Drive safely back.");
       office("data", "Documents", "Delivery note 4521/2026 has a signature now. The delivery is complete.");
     }},
-    { label: "Finish the day", send: "📷 Send end-of-shift photos", at: "17:30", rail: 0, run: async () => {
+    { label: "Finish the day", send: "Send end-of-shift photos", at: "17:30", rail: 0, run: async () => {
       driver("Fatto, giornata finita 👍", "Done. The day is finished.");
       await wait(500);
       media(photos(false));

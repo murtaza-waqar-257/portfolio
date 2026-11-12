@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Contact — Murtaza Waqar</title>
+<title>Contact | Murtaza Waqar</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&display=swap" rel="stylesheet">
 <style>
-  :root{--green:#1f3b2e;--bg:#f5f2ea;--ink:#1c1b18;--mute:#8c887d;--line:#d9d7d0;--acc:#1a1a18;--paper:#fffefb}
+  :root{--green:#1f3b2e;--bg:#f5f2ea;--ink:#1c1b18;--mute:#6b675e;--line:#d9d7d0;--acc:#1a1a18;--paper:#fffefb}
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{overflow-x:hidden}
   body{background:var(--bg);color:var(--ink);font:16px/1.55 "Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;-webkit-font-smoothing:antialiased}
@@ -16,7 +16,6 @@
   .serif{font-family:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;font-weight:400}
   .wrap{max-width:31em;margin:0 auto;padding:0 24px}
   .mute{color:var(--mute)}
-  .label{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--mute)}
 
   nav{display:flex;justify-content:space-between;align-items:baseline;padding:26px 0}
   nav .mark{font:italic 22px "Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif}
@@ -42,12 +41,15 @@
   .sheet .to{font:italic 22px "Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;margin:0 0 14px 28px}
   .sheet label{display:block;margin-left:28px}
   .sheet input,.sheet textarea{width:100%;font:22px/32px "Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;background:transparent;border:0;outline:none;color:var(--ink);resize:none;padding:0}
-  .sheet input::placeholder,.sheet textarea::placeholder{color:#b8b0a2;font-style:italic}
+  .sheet input::placeholder,.sheet textarea::placeholder{color:#8a8274;font-style:italic}
   .sheet textarea{height:160px}
+  .sheet input,.sheet textarea{border-bottom:1.5px solid transparent;transition:border-color .15s ease-out}
+  .sheet input:focus-visible,.sheet textarea:focus-visible{border-bottom-color:var(--green)}
+  .sheet .from input{min-height:44px}
   .sheet .from{display:flex;gap:10px;align-items:baseline}
   .sheet .from span{font:italic 22px "Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;color:var(--mute);white-space:nowrap}
   .sheet .err{margin:8px 0 0 28px;color:var(--acc);min-height:20px}
-  .fold-btn{display:block;margin:10px auto 0;font:italic 18px/1 "Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;border-bottom:1px solid var(--ink);padding:2px 0}
+  .fold-btn{display:block;margin:0 auto;min-height:44px;font:italic 18px/1 "Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;border-bottom:1px solid var(--ink);padding:2px 0}
   .fold-btn:hover{opacity:.55}
 
   /* folding */
@@ -72,7 +74,7 @@
   @keyframes nudge{50%{transform:translate(6px,-6px)}}
 
   .flying{position:fixed;z-index:20;width:120px;pointer-events:none;left:0;top:0}
-  svg.trail{position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:19}
+  svg.trail{position:fixed;inset:0;width:100vw;height:100dvh;pointer-events:none;z-index:19}
   svg.trail path{fill:none;stroke:var(--acc);stroke-width:1.3;stroke-dasharray:3 7;opacity:.55}
 
   /* after the flight */
@@ -91,6 +93,10 @@
   .again{margin-top:22px;color:var(--mute);border-bottom:1px solid var(--line)}
   .again:hover{color:var(--ink)}
 
+  :focus-visible{outline:2px solid var(--green);outline-offset:3px;border-radius:2px}
+  .sheet input:focus-visible,.sheet textarea:focus-visible{outline:0}
+  .top .back{display:inline-block;padding:12px 0}
+  @media (prefers-reduced-motion:reduce){.plane,.arrow,.landed{animation:none}.sheet.folding{animation-duration:.01s}.sheet{transition:none}}
   footer{display:flex;justify-content:space-between;font-size:14px;color:var(--mute);padding:10px 0 12vh}
   .sig{font:26px "Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif}
 
@@ -121,7 +127,7 @@
   <section class="stage" id="stage">
     <form class="sheet" id="sheet" autocomplete="off">
       <p class="to">Dear Murtaza,</p>
-      <label><textarea id="note" maxlength="600" placeholder="I have an idea…"></textarea></label>
+      <label><textarea id="note" aria-label="Your note" maxlength="600" placeholder="I have an idea…"></textarea></label>
       <label class="from"><span>From,</span><input id="name" maxlength="40" placeholder="your name"></label>
       <label class="from"><span>Reply to</span><input id="reply" maxlength="80" placeholder="email or phone"></label>
       <p class="err" id="err"></p>
@@ -129,7 +135,7 @@
     </form>
 
     <div class="plane-zone" id="zone">
-      <svg class="plane" id="plane" viewBox="0 0 200 120" aria-label="Paper plane — drag and release to throw it">
+      <svg class="plane" id="plane" viewBox="0 0 200 120" aria-label="Paper plane. Drag and release to throw it.">
         <polygon points="6,62 196,8 74,74" fill="#fdfcf8" stroke="#16130f" stroke-width="1.4" stroke-linejoin="round"/>
         <polygon points="74,74 196,8 92,112" fill="#efe9de" stroke="#16130f" stroke-width="1.4" stroke-linejoin="round"/>
         <polygon points="74,74 92,112 80,88" fill="#d9d1c3" stroke="#16130f" stroke-width="1.4" stroke-linejoin="round"/>
@@ -152,7 +158,7 @@
     </div>
   </section>
 
-  <footer><span>— M.W.</span><span>2026</span></footer>
+  <footer><span>M.W.</span><span>2026</span></footer>
 </div>
 
 <script>

@@ -6,7 +6,7 @@
 <title>Murtaza Waqar</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&display=swap" rel="stylesheet">
 <style>
-  :root{--bg:#f5f2ea;--ink:#1c1b18;--mute:#8c887d;--hair:#d8d3c6;--green:#1f3b2e;--card:#fffdf7}
+  :root{--bg:#f5f2ea;--ink:#1c1b18;--mute:#6b675e;--hair:#d8d3c6;--green:#1f3b2e;--card:#fffdf7}
   *{box-sizing:border-box;margin:0;padding:0}
   body{background:var(--bg);color:var(--ink);font:18px/1.55 "Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;-webkit-font-smoothing:antialiased;font-feature-settings:"onum" 1}
   ::selection{background:var(--green);color:var(--bg)}
@@ -15,6 +15,7 @@
   a,button.p{color:inherit;font:inherit;background:none;border:0;cursor:pointer;text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:4px;text-decoration-color:var(--ink);transition:text-decoration-color .2s}
   a:hover,button.p:hover,button.p[aria-expanded=true]{text-decoration-color:var(--green);color:var(--green)}
   h1{font:inherit;font-weight:400}
+  button.p{padding:6px 0;margin:-6px 0}
   a.rec{text-decoration:none;background:#e4e1d8;padding:.05em .1em;border-radius:2px;font-size:.92em;white-space:nowrap;transition:background .2s}
   a.rec:before{content:"[";color:var(--mute);margin-right:.12em}
   a.rec:after{content:"]";color:var(--mute);margin-left:.12em}
@@ -87,13 +88,13 @@
   .fields input:focus{border-color:var(--green)}
   .fields span{font-size:11.5px;color:var(--mute);font-variant:small-caps;letter-spacing:.08em;margin-top:3px}
   .tip{font-size:12.5px;color:var(--mute);margin-top:12px}
-  .make{display:block;margin:14px auto 0;font:italic 16px/1 "Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;color:var(--ink);text-align:center}
+  .make{display:block;padding:12px 0;margin:2px auto 0;font:italic 16px/1 "Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;color:var(--ink);text-align:center}
   .make span{border-bottom:1px solid var(--ink);padding-bottom:1px}
-  .make:hover span{opacity:.55}
+  .make:hover span{color:var(--green);border-color:var(--green)}
 
   /* Driver Bot — messages typing */
   .chat{width:100%;max-width:300px;font:14px/1.35 "Helvetica Neue",Arial,sans-serif}
-  .msg{padding:6px 10px;border-radius:12px;margin:5px 0;width:fit-content;max-width:85%;opacity:0;transform:translateY(4px);transition:all .35s}
+  .msg{padding:6px 10px;border-radius:12px;margin:5px 0;width:fit-content;max-width:85%;opacity:0;transform:translateY(4px);transition:opacity .2s ease-out,transform .2s ease-out}
   .msg.show{opacity:1;transform:none}
   .msg.bot{background:#ebe9e3}
   .msg.drv{background:var(--ink);color:var(--bg);margin-left:auto}
@@ -101,6 +102,9 @@
   .dots span:nth-child(2){animation-delay:.15s}.dots span:nth-child(3){animation-delay:.3s}
   @keyframes d{50%{opacity:.2}}
 
+  :focus-visible{outline:2px solid var(--green);outline-offset:3px;border-radius:2px}
+  .fields input:focus-visible{outline:0;border-bottom:2px solid var(--green)}
+  @media (prefers-reduced-motion:reduce){main{animation:none}.drawer,.msg,.calling,a,button.p{transition:none}.dots span{animation:none}}
   footer{margin-top:3.2em;display:flex;justify-content:space-between;font-size:14px;color:var(--mute)}
 
   @media (max-width:520px){body{font-size:17px}main{padding-top:10vh}}
@@ -227,7 +231,7 @@
   scene.addEventListener('pointerup',end);scene.addEventListener('pointercancel',end);
 
   // Driver Bot
-  const script=[['bot','Good morning Marco. Send a photo of the van.'],['drv','📷'],['bot','The van is OK. Now the load.'],['drv','📷'],['bot','Received. I will tell the office when you arrive.']];
+  const script=[['bot','Good morning Marco. Send a photo of the van.'],['drv','Photo sent'],['bot','The van is OK. Now the load.'],['drv','Photo sent'],['bot','Received. I will tell the office when you arrive.']];
   function runChat(){
     const c=document.getElementById('chat'); c.innerHTML=''; let t=300;
     script.forEach(([who,txt])=>{
