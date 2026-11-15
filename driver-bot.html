@@ -363,7 +363,7 @@ footer :focus-visible { outline-color: var(--lane); }
         <span class="w" aria-hidden="true"><span style="--i:5">the</span></span>
         <span class="w" aria-hidden="true"><span style="--i:6">drivers.</span></span>
       </h1>
-      <p class="lede">Driverbot is a WhatsApp assistant for a <strong>delivery company in Italy with 40 vans</strong>. The bot checks each van for new damage. It reads the delivery notes. It follows the vans with GPS. It sends a message to the boss only when there is a problem.</p>
+      <p class="lede">Driverbot is a WhatsApp assistant for <strong>delivery companies with van fleets</strong>. The bot checks each van for new damage. It reads the delivery notes. It follows the vans with GPS. It sends a message to the boss only when there is a problem.</p>
       <div class="actions">
         <a class="btn primary" href="#demo">Try the demo</a>
         <a class="btn ghost" href="#build">See how it is built</a>
@@ -371,21 +371,21 @@ footer :focus-visible { outline-color: var(--lane); }
       <p class="byline">Design and code by <b>Murtaza</b>, November 2026.</p>
     </div>
 
-    <figure class="sheet" aria-label="The first real trip that Driverbot followed, from Narbonne to Cavernago, during one night">
-      <div class="sheet-head"><b>First real trip</b><span>Van <span class="plate"><i></i><span>DV 248 KR</span></span></span></div>
+    <figure class="sheet" aria-label="A real trip that Driverbot followed, from Narbonne to the Bergamo area, during one night">
+      <div class="sheet-head"><b>A real test trip</b><span>Van <span class="plate"><i></i><span>DV 248 KR</span></span></span></div>
       <div class="readout" aria-hidden="true">
         <div>Time<b id="tripClock">19:00</b></div>
         <div>Straight-line distance to go<b><span id="tripKm">560</span> km</b></div>
       </div>
       <svg id="route" viewBox="0 0 520 250" role="img" aria-labelledby="routeT">
-        <title id="routeT">The route goes from Narbonne in France, along the coast, into Italy and up to Cavernago.</title>
+        <title id="routeT">The route goes from Narbonne in France, along the coast, into Italy and up to the Bergamo area.</title>
         <path d="M14 222 C 70 214, 120 236, 180 226 S 270 222, 320 206 S 372 176, 404 168 S 470 176, 510 196" fill="none" stroke="#9FB0BC" stroke-width="1.5" stroke-dasharray="2 6"/>
         <text x="200" y="244" font-family="Archivo, Arial, sans-serif" font-size="12" fill="#7D8C97" font-style="italic">Mediterranean</text>
         <path d="M44 196 C 80 184, 110 178, 150 190 S 220 206, 262 196 S 318 184, 350 172 S 392 150, 410 140 S 436 108, 446 70" fill="none" stroke="#C9D5F7" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="1 9"/>
         <path id="routePath" d="M44 196 C 80 184, 110 178, 150 190 S 220 206, 262 196 S 318 184, 350 172 S 392 150, 410 140 S 436 108, 446 70" fill="none" stroke="#2A55E8" stroke-width="3.5" stroke-linecap="round"/>
         <g font-family="Archivo, Arial, sans-serif" font-size="13" fill="#17212B">
           <circle cx="44" cy="196" r="6" fill="#17212B"/><text x="22" y="176" font-weight="700">Narbonne</text>
-          <circle cx="446" cy="70" r="6" fill="#FF6A13"/><text x="434" y="62" text-anchor="end" font-weight="700">Cavernago</text>
+          <circle cx="446" cy="70" r="6" fill="#FF6A13"/><text x="434" y="62" text-anchor="end" font-weight="700">Near Bergamo</text>
           <text x="150" y="168" fill="#4A5866">France</text><text x="404" y="194" fill="#4A5866">Italy</text>
         </g>
         <g id="pins" font-family="Archivo, Arial, sans-serif"></g>
@@ -393,7 +393,7 @@ footer :focus-visible { outline-color: var(--lane); }
       </svg>
       <div class="stamp" id="stamp">ARRIVED 03:13</div>
       <ol class="tlog" id="tlog" aria-label="The updates that the bot sent during the trip"></ol>
-      <p class="sheet-foot"><span>These are real GPS updates from the night of 6 November. The bot sent them to the boss while he slept.</span><button class="linkbtn" id="replay" type="button">Play the trip again</button></p>
+      <p class="sheet-foot"><span>These are real GPS updates from one night in November 2026. The bot sent them to the office. The plate is an example.</span><button class="linkbtn" id="replay" type="button">Play the trip again</button></p>
     </figure>
   </div>
 
@@ -401,13 +401,13 @@ footer :focus-visible { outline-color: var(--lane); }
     <div class="form" aria-label="Project sheet">
       <div class="form-head">Project sheet <span>N. 001/2026</span></div>
       <dl class="fields">
-        <div><dt>Customer</dt><dd>A delivery company in north Italy</dd></div>
-        <div><dt>Fleet</dt><dd>40 vans</dd></div>
+        <div><dt>Made for</dt><dd>Delivery companies with van fleets</dd></div>
+        <div><dt>Data on this page</dt><dd>The names and plates are examples</dd></div>
         <div><dt>Where it works</dt><dd>WhatsApp</dd></div>
         <div><dt>First version</dt><dd>Built in 1 week</dd></div>
         <div><dt>Automated tests</dt><dd>111</dd></div>
-        <div><dt>Cost to operate</dt><dd>Approximately €5 for each van, each month</dd></div>
-        <div><dt>Status</dt><dd>Pilot. First real trip: 6 November 2026.</dd></div>
+        <div><dt>Estimated cost</dt><dd>€1 to €7 for each van, each month</dd></div>
+        <div><dt>Status</dt><dd>Working prototype. Tested on one real night trip.</dd></div>
         <div><dt>Design and code</dt><dd>Murtaza</dd></div>
       </dl>
     </div>
@@ -438,7 +438,7 @@ footer :focus-visible { outline-color: var(--lane); }
   <section class="road" id="demo">
     <div class="wrap">
       <h2>Try a driver's day.</h2>
-      <p class="measure">You are the driver. Push the green button in the chat to send each message. The bot replies in Italian, the same as for the real drivers. The boss's phone shows only the alerts that he must see.</p>
+      <p class="measure">You are the driver. Push the green button in the chat to send each message. The bot replies in Italian. The English text is below each message. The boss's phone shows only the alerts that he must see.</p>
 
       <div class="rail" aria-hidden="true">
         <div class="rail-track">
@@ -518,9 +518,9 @@ footer :focus-visible { outline-color: var(--lane); }
       <ul class="lessons">
         <li><h3>A van arrives only when it stops.</h3>
           <p class="was"><b>Problem</b>The first version said "arrived" when a van came within 3 km of the town. This also occurred when the van went past at 55 km/h.</p>
-          <p class="now"><b>Correction</b>Now the bot waits until the van parks.</p></li>
+          <p class="now"><b>Correction</b>The next version waits until the van parks.</p></li>
         <li><h3>Message costs change the design.</h3>
-          <p class="was"><b>Problem</b>WhatsApp charges for each message that the bot sends. With 40 vans, the cost increases quickly.</p>
+          <p class="was"><b>Problem</b>WhatsApp charges for each message that the bot sends. With a fleet of 40 vans, the cost increases quickly.</p>
           <p class="now"><b>Correction</b>The bot sends only the problems to the boss. His updates can go to a channel that is free.</p></li>
         <li><h3>Time zones can cause errors.</h3>
           <p class="was"><b>Problem</b>A Maps screenshot from a UK phone showed a time that was one hour wrong. This caused a false "late" alert.</p>
