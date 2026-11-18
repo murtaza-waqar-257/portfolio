@@ -4,28 +4,29 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Contact | Mohammad Murtaza Waqar</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&display=swap" rel="stylesheet">
+<meta name="theme-color" content="#f2e4e1">
 <style>
-  :root{--green:#1f3b2e;--bg:#f5f2ea;--ink:#1c1b18;--mute:#6b675e;--line:#d9d7d0;--acc:#1a1a18;--paper:#fffefb}
+  :root{--green:#2e8b57;--sea-deep:#1f5e43;--bg:#f2e4e1;--ink:#1e2622;--mute:#5d6762;--line:#dcc8c3;--acc:#1f5e43;--paper:#fbf4f2}
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{overflow-x:hidden}
-  body{background:var(--bg);color:var(--ink);font:16px/1.55 "Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;-webkit-font-smoothing:antialiased}
+  body{background:var(--bg);color:var(--ink);font:16px/1.55 Archivo,"Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased}
   ::selection{background:var(--acc);color:var(--bg)}
   a{color:inherit;text-decoration:none}
   button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
-  .serif{font-family:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;font-weight:400}
+  .serif{font-family:Archivo,"Helvetica Neue",Arial,sans-serif;font-weight:400}
   .wrap{max-width:31em;margin:0 auto;padding:0 24px}
   .mute{color:var(--mute)}
 
   nav{display:flex;justify-content:space-between;align-items:baseline;padding:26px 0}
-  nav .mark{font:italic 22px "Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif}
+  nav .mark{font:22px Archivo,"Helvetica Neue",Arial,sans-serif}
   nav .links{display:flex;gap:22px}
   nav .links a{color:var(--mute)} nav .links a:hover,nav .links a.on{color:var(--ink)}
 
   header{padding:40px 0 30px;text-align:center}
   header h1{font-size:clamp(46px,8.5vw,92px);line-height:.95;letter-spacing:-.015em;margin-top:14px}
   header h1 i{color:var(--acc)}
-  header p{margin:18px auto 0;max-width:36ch;font:italic 20px/1.35 "Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;color:var(--mute)}
+  header p{margin:18px auto 0;max-width:36ch;font:20px/1.35 Archivo,"Helvetica Neue",Arial,sans-serif;color:var(--mute)}
 
   .top{max-width:31em;margin:0 auto;padding:7vh 2px 30px;font-size:18px}
   .top .back{font-size:14px;color:var(--mute);text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:3px}
@@ -38,18 +39,18 @@
     background-image:repeating-linear-gradient(transparent 0 31px,#ece6da 31px 32px);background-position:0 70px}
   .sheet:hover{transform:rotate(-.4deg)}
   .sheet:before{content:"";position:absolute;left:44px;top:0;bottom:0;width:1px;background:rgba(107,42,34,.25)}
-  .sheet .to{font:italic 22px "Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;margin:0 0 14px 28px}
+  .sheet .to{font:22px Archivo,"Helvetica Neue",Arial,sans-serif;margin:0 0 14px 28px}
   .sheet label{display:block;margin-left:28px}
-  .sheet input,.sheet textarea{width:100%;font:22px/32px "Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;background:transparent;border:0;outline:none;color:var(--ink);resize:none;padding:0}
+  .sheet input,.sheet textarea{width:100%;font:22px/32px Archivo,"Helvetica Neue",Arial,sans-serif;background:transparent;border:0;outline:none;color:var(--ink);resize:none;padding:0}
   .sheet input::placeholder,.sheet textarea::placeholder{color:#8a8274;font-style:italic}
   .sheet textarea{height:160px}
   .sheet input,.sheet textarea{border-bottom:1.5px solid transparent;transition:border-color .15s ease-out}
   .sheet input:focus-visible,.sheet textarea:focus-visible{border-bottom-color:var(--green)}
   .sheet .from input{min-height:44px}
   .sheet .from{display:flex;gap:10px;align-items:baseline}
-  .sheet .from span{font:italic 22px "Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;color:var(--mute);white-space:nowrap}
+  .sheet .from span{font:22px Archivo,"Helvetica Neue",Arial,sans-serif;color:var(--mute);white-space:nowrap}
   .sheet .err{margin:8px 0 0 28px;color:var(--acc);min-height:20px}
-  .fold-btn{display:block;margin:0 auto;min-height:44px;font:italic 18px/1 "Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;border-bottom:1px solid var(--ink);padding:2px 0}
+  .fold-btn{display:block;margin:0 auto;min-height:44px;font:18px/1 Archivo,"Helvetica Neue",Arial,sans-serif;border-bottom:1px solid var(--ink);padding:2px 0}
   .fold-btn:hover{opacity:.55}
 
   /* folding */
@@ -68,7 +69,7 @@
   @keyframes appear{from{opacity:0;transform:scale(.4) rotate(-30deg)}to{opacity:1;transform:none}}
   @keyframes bob{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-10px) rotate(2deg)}}
   .plane.dragging{animation:none}
-  .throw-hint{font:italic 20px "Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;color:var(--mute);text-align:center}
+  .throw-hint{font:20px Archivo,"Helvetica Neue",Arial,sans-serif;color:var(--mute);text-align:center}
   .throw-hint b{font-weight:400;color:var(--ink)}
   .arrow{animation:nudge 1.4s ease-in-out infinite;display:inline-block}
   @keyframes nudge{50%{transform:translate(6px,-6px)}}
@@ -98,7 +99,7 @@
   .top .back{display:inline-block;padding:12px 0}
   @media (prefers-reduced-motion:reduce){.plane,.arrow,.landed{animation:none}.sheet.folding{animation-duration:.01s}.sheet{transition:none}}
   footer{display:flex;justify-content:space-between;font-size:14px;color:var(--mute);padding:10px 0 12vh}
-  .sig{font:26px "Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif}
+  .sig{font:26px Archivo,"Helvetica Neue",Arial,sans-serif}
 
   @media (max-width:680px){
     header{padding:20px 0 24px}
@@ -111,9 +112,17 @@
   .stage{min-height:520px}
     nav .links a:first-child{display:none}
   }
-  .mono{font:34px/1 "Pinyon Script","Snell Roundhand","Apple Chancery",cursive;color:var(--ink);text-decoration:none;letter-spacing:.02em;padding:4px 2px}
-  .mono:hover{color:var(--green)}
-  .hd{display:flex;justify-content:space-between;align-items:center;padding-bottom:14px;border-bottom:3px double #d8d3c6}
+  .mono{font-weight:800;font-variation-settings:"wdth" 112;font-size:20px;letter-spacing:-.02em;color:var(--green);text-decoration:none}
+  .hd{display:flex;justify-content:space-between;align-items:baseline;padding-bottom:16px;border-bottom:1px solid var(--line)}
+  .top h1{font-weight:800!important;font-variation-settings:"wdth" 112;font-size:clamp(40px,11vw,64px)!important;line-height:.95;letter-spacing:-.035em;color:var(--green)}
+  .top p.mute{margin-top:14px;font-size:18px}
+  .sheet{border-radius:3px;background-image:repeating-linear-gradient(transparent 0 31px,#efe0dc 31px 32px)}
+  .sheet:before{background:rgba(46,139,87,.28)}
+  .sheet input::placeholder,.sheet textarea::placeholder{color:#9a908c;font-style:normal}
+  .btn{border-radius:3px;font-weight:700}
+  .fold-btn,.again,.throw-hint{font-weight:600}
+  footer{border-top:1px solid var(--line);padding-top:16px;font-size:13px;font-weight:500;font-variation-settings:"wdth" 112;letter-spacing:.06em;color:#9a908c}
+  .landed h2{font-weight:800;font-variation-settings:"wdth" 112;letter-spacing:-.02em}
 </style>
 </head>
 <body>
@@ -136,10 +145,10 @@
 
     <div class="plane-zone" id="zone">
       <svg class="plane" id="plane" viewBox="0 0 200 120" aria-label="Paper plane. Drag and release to throw it.">
-        <polygon points="6,62 196,8 74,74" fill="#fdfcf8" stroke="#16130f" stroke-width="1.4" stroke-linejoin="round"/>
-        <polygon points="74,74 196,8 92,112" fill="#efe9de" stroke="#16130f" stroke-width="1.4" stroke-linejoin="round"/>
-        <polygon points="74,74 92,112 80,88" fill="#d9d1c3" stroke="#16130f" stroke-width="1.4" stroke-linejoin="round"/>
-        <line x1="74" y1="74" x2="196" y2="8" stroke="#6b2a22" stroke-width="1"/>
+        <polygon points="6,62 196,8 74,74" fill="#fbf4f2" stroke="#16130f" stroke-width="1.4" stroke-linejoin="round"/>
+        <polygon points="74,74 196,8 92,112" fill="#f2e4e1" stroke="#16130f" stroke-width="1.4" stroke-linejoin="round"/>
+        <polygon points="74,74 92,112 80,88" fill="#dcc8c3" stroke="#16130f" stroke-width="1.4" stroke-linejoin="round"/>
+        <line x1="74" y1="74" x2="196" y2="8" stroke="#2e8b57" stroke-width="1"/>
       </svg>
       <p class="throw-hint"><b>Drag the plane and let go</b> to throw it <span class="arrow">↗</span><br><span style="font-size:15px">or <button id="tapThrow" style="text-decoration:underline">tap here</button></span></p>
     </div>
@@ -158,7 +167,7 @@
     </div>
   </section>
 
-  <footer><span>M.W.</span><span>2026</span></footer>
+  <footer><span>made by murtaza.</span><span>2026</span></footer>
 </div>
 
 <script>
