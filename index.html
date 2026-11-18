@@ -5,67 +5,63 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Mohammad Murtaza Waqar</title>
 <meta name="description" content="Mohammad Murtaza Waqar. A student who builds tools that real businesses and people use.">
-<meta name="theme-color" content="#14231d">
+<meta name="theme-color" content="#fffef2">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;500&family=Archivo:wdth,wght@100..125,600..800&display=swap" rel="stylesheet">
 <style>
-  /* Deep bottle green, pale blush type, one bright green. */
-  :root{--bg:#14231d;--raise:#1b2f27;--ink:#efe3de;--muted:#9db0a6;--line:rgba(239,227,222,.14);--acc:#5fbf88;--r:3px;
-        --blush:#f2e4e1;--petal:#fbf4f2;--sea:#2e8b57;--sea-deep:#1f5e43;--high:#a1443a;--stone:#8c8580}
+  /* Apothecary: ivory paper, charcoal type, small and quiet. Square corners. */
+  :root{--ivory:#fffef2;--sand:#ebe7d9;--sand-2:#e2ddcc;--ink:#333;--muted:#6b6a63;--line:#d9d5c6;--dark:#252525;--live:#4b7a52;
+        --blush:#f2e4e1;--petal:#fbf4f2;--sea:#2e8b57;--high:#a1443a;--stone:#8c8580}
   *{box-sizing:border-box;margin:0;padding:0}
   html{-webkit-text-size-adjust:100%}
-  body{background:var(--bg);color:var(--ink);font:18px/1.55 Archivo,"Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased}
-  ::selection{background:var(--acc);color:var(--bg)}
-  main{max-width:46rem;margin:0 auto;padding:28px 24px 0}
-  a{color:inherit;text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:4px;text-decoration-color:rgba(239,227,222,.3);transition:color .2s,text-decoration-color .2s}
-  a:hover{color:var(--acc);text-decoration-color:var(--acc)}
+  body{background:var(--ivory);color:var(--ink);font:400 15px/1.6 "Hanken Grotesk","Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased;letter-spacing:.005em}
+  ::selection{background:var(--ink);color:var(--ivory)}
+  a{color:inherit}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 24px}
 
-  .top{display:flex;justify-content:space-between;align-items:baseline;font-size:14px;color:var(--muted)}
-  .top b{color:var(--ink);font-weight:800;font-variation-settings:"wdth" 118;letter-spacing:-.01em;font-size:15px}
+  .top{display:flex;justify-content:space-between;align-items:center;height:64px;border-bottom:1px solid var(--line)}
+  .top .who{font-weight:500;text-decoration:none}
+  .top nav{display:flex;gap:22px}
+  .top nav a{text-decoration:none;color:var(--muted)}
+  .top nav a:hover{color:var(--ink)}
 
-  /* The one loud thing: the name, set huge and wide. */
-  .name{margin:16vh 0 0;font-weight:850;font-variation-settings:"wdth" 122;font-size:clamp(54px,15.5vw,132px);line-height:.86;letter-spacing:-.045em}
-  .name span{display:block}
-  .name .last{color:var(--acc)}
-  .intro{display:grid;grid-template-columns:1fr;gap:14px;margin:7vh 0 0;max-width:30em;font-size:20px;line-height:1.45}
-  .intro p:last-child{color:var(--muted);font-size:17px}
-  @media (min-width:760px){.intro{grid-template-columns:1fr 1fr;gap:40px;max-width:none}.intro p:last-child{padding-top:4px}}
+  .hero{padding:14vh 0 12vh;display:grid;gap:28px}
+  .hero h1{font-weight:300;font-size:clamp(38px,7vw,76px);line-height:1.04;letter-spacing:-.02em;max-width:12em}
+  .hero p{max-width:30em;font-size:16px;color:var(--muted)}
+  @media (min-width:900px){.hero{grid-template-columns:7fr 4fr;align-items:end}.hero p{padding-bottom:10px}}
 
-  .label{display:flex;justify-content:space-between;margin:16vh 0 0;padding-bottom:10px;border-bottom:1px solid var(--ink);font-size:14px;color:var(--muted)}
-
-  .work{list-style:none}
-  .work>li{border-bottom:1px solid var(--line)}
-  .row{display:grid;grid-template-columns:1fr auto;align-items:end;gap:6px 18px;width:100%;padding:26px 0 22px;background:none;border:0;color:inherit;font:inherit;text-align:left;cursor:pointer}
-  .row .n{font-weight:800;font-variation-settings:"wdth" 118;font-size:clamp(44px,11vw,76px);line-height:.9;letter-spacing:-.04em;transition:color .25s}
-  .row .s{font-size:13px;color:var(--muted);padding-bottom:6px;white-space:nowrap}
-  .row .s:before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--acc);margin-right:8px;vertical-align:1px}
-  .row .s.wip:before{background:transparent;border:1.5px solid var(--muted);width:5px;height:5px}
-  .row .d{grid-column:1/-1;color:var(--muted);font-size:16.5px;line-height:1.45;max-width:32em}
-  .row:hover .n,.row[aria-expanded=true] .n{color:var(--acc)}
-  .row.static{cursor:default}.row.static:hover .n{color:var(--ink)}
+  /* Each project is laid out like a product page */
+  .product{display:grid;gap:28px;padding:56px 0;border-top:1px solid var(--line)}
+  @media (min-width:900px){.product{grid-template-columns:7fr 5fr;gap:56px;padding:72px 0;align-items:center}}
+  .shot{background:var(--sand);min-height:380px;display:grid;place-items:center;padding:52px 20px 40px;position:relative;overflow:hidden}
+  @media (min-width:900px){.shot{min-height:560px;padding:60px 40px}}
+  .shot .tag{position:absolute;left:16px;top:14px;font-size:12.5px;color:var(--muted)}
+  .info .kind{font-size:13px;color:var(--muted)}
+  .info h2{font-family:Archivo,"Hanken Grotesk",sans-serif;font-weight:700;font-variation-settings:"wdth" 108;font-size:clamp(34px,5vw,46px);line-height:1;letter-spacing:-.025em;margin:8px 0 18px}
+  .info .desc{font-size:16.5px;line-height:1.55;max-width:28em}
+  dl.spec{margin:28px 0 30px;border-top:1px solid var(--line)}
+  dl.spec div{display:grid;grid-template-columns:8.5em 1fr;gap:12px;padding:12px 0;border-bottom:1px solid var(--line);font-size:14px}
+  dl.spec dt{color:var(--muted)}
+  .live:before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--live);margin-right:8px;vertical-align:1px}
+  .soon:before{content:"";display:inline-block;width:5px;height:5px;border-radius:50%;border:1.5px solid var(--muted);margin-right:8px;vertical-align:1px}
+  .buy{display:inline-flex;align-items:center;justify-content:space-between;gap:40px;min-width:240px;height:52px;padding:0 20px;background:var(--dark);color:var(--ivory);text-decoration:none;font-size:15px;transition:background .2s}
+  .buy:hover{background:#000}
+  .buy span{font-size:18px;line-height:1}
+  .buy.ghost{background:transparent;color:var(--ink);border:1px solid var(--ink)}
+  .buy.ghost:hover{background:var(--ink);color:var(--ivory)}
   .blur{filter:blur(5px);user-select:none;-webkit-user-select:none}
 
-  .drawer{display:grid;grid-template-rows:0fr;transition:grid-template-rows .45s ease}
-  .drawer.open{grid-template-rows:1fr}
-  .drawer>div{overflow:hidden}
-  .card{margin:0 0 26px;padding:24px 20px 22px;background:var(--raise);border-radius:var(--r);font-size:16px;line-height:1.55}
-  .card .demo{min-height:120px;display:grid;place-items:center;margin-bottom:20px}
-  .card p+p{margin-top:.8em}
-  .card .meta{color:var(--muted);font-size:13.5px;margin-top:12px}
-  .card .go{display:inline-block;margin-top:16px;font-weight:700;color:var(--acc);text-decoration:none;border-bottom:1.5px solid var(--acc);padding-bottom:1px}
-  .card .go:hover{color:var(--ink);border-color:var(--ink)}
-
-  /* pore preview keeps pore's own colours, like a screenshot of the app */
-  .pore{width:100%;max-width:330px;background:var(--blush);color:#1e2622;border-radius:var(--r);padding:20px 18px}
-  .pore .pm{font-weight:800;font-variation-settings:"wdth" 112;font-size:26px;letter-spacing:-.03em;color:var(--sea);line-height:1}
+  /* pore preview: a small card in pore's own colours, like a product in its box */
+  .pore{width:100%;max-width:320px;background:var(--blush);color:#1e2622;padding:20px 18px;box-shadow:0 20px 40px rgba(60,50,20,.12)}
+  .pore .pm{font-family:Archivo,sans-serif;font-weight:800;font-variation-settings:"wdth" 112;font-size:26px;letter-spacing:-.03em;color:var(--sea);line-height:1}
   .samples{display:flex;gap:6px;flex-wrap:wrap;margin:14px 0 16px}
-  .samples button{font:600 13px/1 Archivo,sans-serif;color:#1e2622;background:transparent;border:1.5px solid #1e2622;border-radius:20px;padding:7px 11px;cursor:pointer}
+  .samples button{font:500 13px/1 "Hanken Grotesk",sans-serif;color:#1e2622;background:transparent;border:1.5px solid #1e2622;border-radius:20px;padding:7px 11px;cursor:pointer}
   .samples button[aria-pressed=true]{background:#1e2622;color:var(--petal)}
   .verdict{display:flex;align-items:baseline;gap:12px}
-  .verdict b{font-weight:800;font-variation-settings:"wdth" 112;font-size:54px;line-height:.9;color:var(--high);transition:color .3s}
+  .verdict b{font-family:Archivo,sans-serif;font-weight:800;font-variation-settings:"wdth" 112;font-size:52px;line-height:.9;color:var(--high);transition:color .3s}
   .verdict.clear b{color:var(--sea)}
   .verdict span{font-size:15px;line-height:1.35;max-width:14em}
-  .glance{display:flex;gap:3px;height:12px;border-radius:var(--r);overflow:hidden;margin-top:16px}
+  .glance{display:flex;gap:3px;height:12px;border-radius:3px;overflow:hidden;margin-top:16px}
   .glance i{transition:flex-grow .5s ease;min-width:4px}
   .legend{display:flex;flex-wrap:wrap;gap:4px 14px;margin-top:10px;font-size:13px;color:#5d6762}
   .legend span:before{content:"";display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:6px;background:var(--c)}
@@ -97,58 +93,68 @@
   .link{width:16px;height:8px;border:2.5px solid #8f8a80;border-radius:5px;left:-13px;top:27px;backface-visibility:visible}
   .loop{width:40px;height:40px;border-radius:50%;left:-48px;top:11px;backface-visibility:visible;border:5px solid #b4afa4;
     box-shadow:inset 1.5px 1.5px 0 rgba(255,255,255,.7),inset -1px -1px 0 rgba(0,0,0,.25),1px 1px 0 rgba(0,0,0,.15)}
-  .shadow{position:absolute;left:50%;bottom:14px;width:240px;height:16px;margin-left:-120px;border-radius:50%;background:radial-gradient(closest-side,rgba(0,0,0,.55),transparent);pointer-events:none}
+  .shadow{position:absolute;left:50%;bottom:14px;width:240px;height:16px;margin-left:-120px;border-radius:50%;background:radial-gradient(closest-side,rgba(40,35,20,.25),transparent);pointer-events:none}
   .fields{display:flex;justify-content:center;gap:16px;margin-top:2px}
   .fields label{display:flex;flex-direction:column;align-items:center}
-  .fields input{border:0;border-bottom:1px solid var(--ink);outline:0;background:transparent;caret-color:var(--acc);text-align:center;text-transform:uppercase;font:600 18px/1.7 Archivo,"Helvetica Neue",Arial,sans-serif;letter-spacing:.08em;color:var(--ink);border-radius:0;width:2.6em}
+  .fields input{border:0;border-bottom:1px solid var(--ink);outline:0;background:transparent;caret-color:var(--ink);text-align:center;text-transform:uppercase;font:500 17px/1.7 "Hanken Grotesk","Helvetica Neue",Arial,sans-serif;letter-spacing:.08em;color:var(--ink);border-radius:0;width:2.6em}
   .fields #plateIn{width:7.6em}
-  .fields input:focus{border-color:var(--acc)}
+  .fields input:focus{border-color:var(--ink)}
   .fields span{font-size:11.5px;color:var(--mute);letter-spacing:.02em;margin-top:3px}
   .tip{font-size:12.5px;color:var(--mute);margin-top:12px}
-  .make{display:block;padding:12px 0;margin:2px auto 0;font:600 16px/1 Archivo,sans-serif;color:var(--ink);text-align:center;text-decoration:none}
+  .make{display:block;padding:12px 0;margin:2px auto 0;font:400 15px/1 "Hanken Grotesk",sans-serif;color:var(--ink);text-align:center;text-decoration:none}
   .make span{border-bottom:1px solid var(--ink);padding-bottom:1px}
-  .make:hover span{color:var(--acc);border-color:var(--acc)}
+  .make:hover span{color:var(--ink);border-color:var(--ink)}
 
 
 
-  .chat{width:100%;max-width:300px;font:14px/1.35 Archivo,"Helvetica Neue",Arial,sans-serif}
-  .msg{padding:7px 11px;border-radius:12px;margin:5px 0;width:fit-content;max-width:85%;opacity:0;transform:translateY(4px);transition:opacity .2s ease-out,transform .2s ease-out}
+
+  .kcform{width:100%}
+  .chat{width:100%;max-width:300px;font:14px/1.4 "Hanken Grotesk","Helvetica Neue",Arial,sans-serif}
+  .msg{padding:8px 12px;border-radius:14px;margin:6px 0;width:fit-content;max-width:85%;opacity:0;transform:translateY(4px);transition:opacity .2s ease-out,transform .2s ease-out}
   .msg.show{opacity:1;transform:none}
-  .msg.bot{background:#2a4237;color:var(--ink)}
-  .msg.drv{background:var(--acc);color:var(--bg);margin-left:auto}
+  .msg.bot{background:var(--ivory)}
+  .msg.drv{background:var(--dark);color:var(--ivory);margin-left:auto}
   .dots span{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--muted);margin:0 1.5px;animation:d 1s infinite}
   .dots span:nth-child(2){animation-delay:.15s}.dots span:nth-child(3){animation-delay:.3s}
   @keyframes d{50%{opacity:.2}}
+  .replay{position:absolute;right:16px;bottom:14px;background:none;border:0;font:inherit;font-size:12.5px;color:var(--muted);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+  .hushshot{width:100%;max-width:300px;display:grid;gap:10px}
+  .hushshot i{display:block;height:12px;background:var(--sand-2)}
+  .hushshot i:nth-child(2){width:80%}.hushshot i:nth-child(3){width:60%}
 
-  .contact{margin:18vh 0 0}
-  .contact p{color:var(--muted);font-size:16px}
-  .contact a.big{display:inline-block;margin-top:10px;font-weight:800;font-variation-settings:"wdth" 118;font-size:clamp(36px,9vw,64px);line-height:.95;letter-spacing:-.035em;text-decoration:none;color:var(--ink)}
-  .contact a.big:after{content:" \2192";color:var(--acc);transition:margin .25s}
-  .contact a.big:hover{color:var(--acc)}
-  .contact .links{display:flex;gap:22px;margin-top:22px;font-size:16px}
-  footer{margin:14vh 0 0;padding:18px 0 34px;border-top:1px solid var(--line);display:flex;justify-content:space-between;font-size:13px;font-variation-settings:"wdth" 112;letter-spacing:.06em;color:var(--muted)}
+  .note{padding:12vh 0;border-top:1px solid var(--line);display:grid;gap:22px}
+  .note h2{font-weight:300;font-size:clamp(30px,5vw,48px);line-height:1.1;letter-spacing:-.015em;max-width:14em}
+  .note p{color:var(--muted);max-width:32em;font-size:16px}
+  @media (min-width:900px){.note{grid-template-columns:7fr 5fr;align-items:end;gap:56px}}
 
-  :focus-visible{outline:2px solid var(--acc);outline-offset:3px;border-radius:2px}
-  .fields input:focus-visible{outline:0;border-bottom:2px solid var(--acc)}
+  footer{background:var(--dark);color:#cfcdc4;font-size:13.5px}
+  footer .wrap{display:grid;grid-template-columns:repeat(2,1fr);gap:28px 20px;padding:48px 24px 36px}
+  @media (min-width:900px){footer .wrap{grid-template-columns:repeat(3,1fr)}}
+  footer h3{font-size:13.5px;font-weight:500;color:var(--ivory);margin-bottom:10px}
+  footer a{color:#cfcdc4;text-decoration:none;display:block;padding:2px 0}
+  footer a:hover{color:var(--ivory)}
+  footer .credit{grid-column:1/-1;padding-top:22px;border-top:1px solid #3a3a3a;color:#8f8d85;letter-spacing:.04em}
+
+  :focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+  .fields input:focus-visible{outline:0;border-bottom:2px solid var(--ink)}
   @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
-<main>
-  <div class="top"><b>M.W.</b><span id="hello">Good evening.</span></div>
+<header class="wrap top">
+  <a class="who" href="index.html">Mohammad Murtaza Waqar</a>
+  <nav><a href="#work">Work</a><a href="about.html">Contact</a></nav>
+</header>
 
-  <h1 class="name"><span>Mohammad</span><span>Murtaza</span><span class="last">Waqar.</span></h1>
-  <div class="intro">
-    <p>I'm a student. I build tools that real businesses and people use.</p>
-    <p>I use AI to help me write code, and I test and fix each tool myself.</p>
-  </div>
+<main class="wrap">
+  <section class="hero">
+    <h1 id="hello">Good evening. I make useful things.</h1>
+    <p>I'm a student. I build tools that real businesses and people use. I use AI to help me write the code, and I test and fix each tool myself.</p>
+  </section>
 
-  <div class="label"><span>Work</span><span>4 projects</span></div>
-  <ul class="work">
-    <li>
-      <button class="row" data-d="pore" aria-expanded="false" aria-controls="pore"><span class="n">pore</span><span class="s">Live</span><span class="d">Scan, photograph or type a skincare or makeup product and see which ingredients may clog pores.</span></button>
-      <div class="drawer" id="pore"><div><div class="card">
-        <div class="demo"><div class="pore" aria-label="Preview of a pore result">
+  <div id="work">
+  <article class="product">
+    <div class="shot"><span class="tag">Try it: pick a product</span><div class="pore" aria-label="Preview of a pore result">
           <div class="pm">pore</div>
           <div class="samples" role="group" aria-label="Sample products">
             <button type="button" data-s="0" aria-pressed="true">Cleansing balm</button>
@@ -159,24 +165,38 @@
           <div class="glance" id="pg"><i style="background:var(--high)"></i><i style="background:var(--stone)"></i><i style="background:var(--sea)"></i><i style="background:#b8aeab"></i></div>
           <div class="legend" id="pl"></div>
         </div></div>
-        <p>It reads the barcode, a photo of the pack or a typed list. Then it checks every ingredient against a list I researched from lab studies. If a product isn't in the open database, it finds the ingredients on the web by itself. Free, with no ads and no sign-up.</p>
-        <p class="meta">JavaScript, Vercel functions, Claude (vision and web search), Open Beauty Facts</p>
-        <a class="go" href="https://pore-omega.vercel.app" target="_blank" rel="noopener">Open pore ↗</a>
-      </div></div></div>
-    </li>
-    <li>
-      <button class="row" data-d="driver" aria-expanded="false" aria-controls="driver"><span class="n">Driverbot</span><span class="s">Tested</span><span class="d">A WhatsApp assistant that handles the daily vehicle checks for delivery van fleets.</span></button>
-      <div class="drawer" id="driver"><div><div class="card">
-        <div class="demo"><div class="chat" id="chat"></div></div>
-        <p>Drivers do not need a new app. The bot asks for photos of the van and the load. It reads the ETA from a screenshot. It uses GPS to tell the office when the van arrives.</p>
-        <p class="meta">Python, Flask, Claude, WhatsApp Cloud API, Geotab, Supabase</p>
-        <a class="go" href="driver-bot.html">See the full page and try the demo</a>
-      </div></div></div>
-    </li>
-    <li>
-      <button class="row" data-d="targa" aria-expanded="false" aria-controls="targa"><span class="n">Targa</span><span class="s">Live</span><span class="d">Makes 3D-printable number plate keychains in your browser.</span></button>
-      <div class="drawer" id="targa"><div><div class="card">
-    <form class="demo" id="plateForm">
+    <div class="info">
+      <p class="kind">Ingredient checker</p>
+      <h2>pore</h2>
+      <p class="desc">Scan, photograph or type a skincare or makeup product. It shows which ingredients may clog pores, colour-coded and easy to read at a glance.</p>
+      <dl class="spec">
+        <div><dt>Suited to</dt><dd>Anyone choosing skincare or makeup</dd></div>
+        <div><dt>How it works</dt><dd>Reads the barcode, the pack or a typed list. Checks every ingredient against a list I researched from lab studies. Finds missing products on the web by itself.</dd></div>
+        <div><dt>Made with</dt><dd>JavaScript, Vercel, Claude, Open Beauty Facts</dd></div>
+        <div><dt>Status</dt><dd class="live">Live. Free, no ads, no sign-up</dd></div>
+      </dl>
+      <a class="buy" href="https://pore-omega.vercel.app" target="_blank" rel="noopener">Open pore <span>↗</span></a>
+    </div>
+  </article>
+
+  <article class="product">
+    <div class="shot"><span class="tag">A driver's morning</span><div class="chat" id="chat"></div><button class="replay" id="replay" type="button">Play again</button></div>
+    <div class="info">
+      <p class="kind">Fleet assistant</p>
+      <h2>Driverbot</h2>
+      <p class="desc">A WhatsApp assistant that handles the daily vehicle checks for delivery van fleets. Drivers don't need a new app.</p>
+      <dl class="spec">
+        <div><dt>Suited to</dt><dd>Delivery companies with van fleets</dd></div>
+        <div><dt>How it works</dt><dd>Asks for photos of the van and the load. Reads the ETA from a screenshot. Uses GPS to tell the office when the van arrives.</dd></div>
+        <div><dt>Made with</dt><dd>Python, Flask, Claude, WhatsApp Cloud API, Geotab, Supabase</dd></div>
+        <div><dt>Status</dt><dd class="live">Built and tested</dd></div>
+      </dl>
+      <a class="buy" href="driver-bot.html">See the full page <span>→</span></a>
+    </div>
+  </article>
+
+  <article class="product">
+    <div class="shot"><span class="tag">Drag to turn it</span><form class="kcform" id="plateForm">
       <div class="kcwrap">
         <div class="scene" id="scene" aria-label="3D keychain preview. Drag to turn it.">
           <div class="kc" id="kc">
@@ -200,41 +220,58 @@
         <p class="tip">Change the plate. Flick the keychain to spin it.</p>
         <a class="make" id="make" href="https://waqarmmurtaza-dev.github.io/hiway-keychain/?targa=AB%20123%20CD" target="_blank" rel="noopener"><span>Make the file for a 3D printer</span> ↗</a>
       </div>
-    </form>
-    <p>You type an Italian number plate. The web app makes a 3D model of the keychain. You can send the file directly to a 3D printer.</p>
-    <p class="meta">JavaScript, Three.js, 3MF</p>
-  </div></div></div>
-    </li>
-    <li>
-      <div class="row static"><span class="n">Hush</span><span class="s wip">In progress</span><span class="d"><span class="blur" aria-hidden="true">An AI receptionist that answers the phone for pest control companies.</span></span></div>
-    </li>
-  </ul>
+    </form></div>
+    <div class="info">
+      <p class="kind">3D printing tool</p>
+      <h2>Targa</h2>
+      <p class="desc">Makes 3D-printable number plate keychains in your browser. Type an Italian plate and send the file straight to a 3D printer.</p>
+      <dl class="spec">
+        <div><dt>Made with</dt><dd>JavaScript, Three.js, 3MF</dd></div>
+        <div><dt>Status</dt><dd class="live">Live</dd></div>
+      </dl>
+    </div>
+  </article>
 
-  <section class="contact">
-    <p>Got an idea, a job or a question?</p>
-    <a class="big" href="about.html">Write to me</a>
-    <div class="links"><a href="https://github.com/murtaza-waqar-257" target="_blank" rel="noopener">GitHub</a></div>
+  <article class="product">
+    <div class="shot"><span class="tag">Coming soon</span><div class="hushshot" aria-hidden="true"><i></i><i></i><i></i></div></div>
+    <div class="info">
+      <p class="kind">Phone assistant</p>
+      <h2>Hush</h2>
+      <p class="desc"><span class="blur" aria-hidden="true">An AI receptionist that answers the phone for pest control companies.</span></p>
+      <dl class="spec">
+        <div><dt>Status</dt><dd class="soon">In progress</dd></div>
+      </dl>
+    </div>
+  </article>
+  </div>
+
+  <section class="note">
+    <h2>Have an idea, a job or a question?</h2>
+    <div>
+      <p>Write me a note. I read every one.</p>
+      <p style="margin-top:22px"><a class="buy" href="about.html">Write to me <span>→</span></a></p>
+    </div>
   </section>
-
-  <footer><span>made by murtaza.</span><span>2026</span></footer>
 </main>
+
+<footer>
+  <div class="wrap">
+    <div><h3>Work</h3><a href="https://pore-omega.vercel.app" target="_blank" rel="noopener">pore</a><a href="driver-bot.html">Driverbot</a><a href="https://waqarmmurtaza-dev.github.io/hiway-keychain/" target="_blank" rel="noopener">Targa</a></div>
+    <div><h3>Contact</h3><a href="about.html">Write to me</a></div>
+    <div><h3>Elsewhere</h3><a href="https://github.com/murtaza-waqar-257" target="_blank" rel="noopener">GitHub</a></div>
+    <p class="credit">made by murtaza.</p>
+  </div>
+</footer>
+
 <script>
+
 
 
   // a host greets you by the hour
   const now=new Date(), h=now.getHours();
-  document.getElementById('hello').textContent=(h<5?'Good evening.':h<12?'Good morning.':h<18?'Good afternoon.':'Good evening.');
+  document.getElementById('hello').textContent=(h<5?'Good evening.':h<12?'Good morning.':h<18?'Good afternoon.':'Good evening.')+' I make useful things.';
 
-  const btns=[...document.querySelectorAll('button.row')];
   let chatTimer=[];
-
-  btns.forEach(b=>b.addEventListener('click',()=>{
-    const id=b.dataset.d, d=document.getElementById(id), open=!d.classList.contains('open');
-    btns.forEach(o=>{o.setAttribute('aria-expanded','false');document.getElementById(o.dataset.d).classList.remove('open')});
-    chatTimer.forEach(clearTimeout);chatTimer=[];
-    if(open){d.classList.add('open');b.setAttribute('aria-expanded','true');
-      if(id==='driver')runChat(); }
-  }));
 
   // Targa: the plate you type goes to the real app
   const APP='https://waqarmmurtaza-dev.github.io/hiway-keychain/';
@@ -252,7 +289,7 @@
   const kc=$('kc'),scene=$('scene'),shine=$('shine'),shadow=$('shadow');
   let ry=-30,rx=-14,v=.35,drag=null,lastX=0,t0=0;
   (function spin(t){
-    if($('targa').classList.contains('open')){
+    if(true){
       if(!drag){ ry+=v; v+=(.35*Math.sign(v||1)-v)*.02; }
       const bob=Math.sin(t/900)*4;
       kc.style.transform=`translateY(${bob}px) rotateX(${rx}deg) rotateY(${ry}deg)`;
@@ -297,6 +334,12 @@
   }
   document.querySelectorAll('.samples button').forEach(b=>b.addEventListener('click',()=>showSample(+b.dataset.s)));
   showSample(0);
+
+
+  // Driverbot: play the chat when it comes into view
+  const chatEl=document.getElementById('chat');
+  new IntersectionObserver((es,o)=>{ if(es[0].isIntersecting){ runChat(); o.disconnect(); } },{threshold:.5}).observe(chatEl);
+  document.getElementById('replay').addEventListener('click',()=>{chatTimer.forEach(clearTimeout);chatTimer=[];runChat()});
 
 </script>
 </body>
