@@ -64,6 +64,18 @@
   .dot.soon{background:transparent;border:1.5px solid currentColor;width:7px;height:7px}
   .blur{filter:blur(5px);user-select:none;-webkit-user-select:none}
 
+  /* Hush: lines filling in, like something being built */
+  .building{display:grid;gap:10px;margin:4px 0 2px;max-width:24em}
+  .building i{display:block;height:13px;border-radius:7px;background:rgba(58,74,48,.09);position:relative;overflow:hidden}
+  .building i:nth-child(1){width:100%}.building i:nth-child(2){width:82%}.building i:nth-child(3){width:58%}
+  .building i:after{content:"";position:absolute;inset:0;border-radius:inherit;background:var(--green);opacity:.22;transform-origin:left;transform:scaleX(0);animation:fill 3.2s cubic-bezier(.6,0,.3,1) infinite}
+  .building i:nth-child(2):after{animation-delay:.35s}.building i:nth-child(3):after{animation-delay:.7s}
+  @keyframes fill{0%{transform:scaleX(0)}55%{transform:scaleX(1)}80%{transform:scaleX(1);opacity:.22}100%{transform:scaleX(1);opacity:0}}
+  .buildfoot{margin-top:auto;display:flex;align-items:center;gap:10px;padding-top:16px;border-top:1.5px solid var(--rule);font-weight:800;font-variation-settings:"wdth" 112;font-size:16px;min-height:55px}
+  .building{margin-bottom:28px}
+  .pulse{width:8px;height:8px;border-radius:50%;background:var(--amber);animation:pulse 1.6s ease-in-out infinite}
+  @keyframes pulse{50%{opacity:.25;transform:scale(.8)}}
+  @media (prefers-reduced-motion:reduce){.building i:after{animation:none;transform:scaleX(.6)}.pulse{animation:none}}
   /* Back of the pack: how I work */
   .back{margin-top:14px;background:var(--paper);border:1.5px solid var(--rule);border-radius:var(--r);padding:22px}
   .back h2{font-size:clamp(30px,6vw,44px);color:var(--green);margin-bottom:14px}
@@ -135,9 +147,12 @@
     </a>
 
     <div class="label">
-      <div class="kind"><span>Phone assistant</span><span><i class="dot soon"></i>In progress</span></div>
+      <div class="kind"><span class="blur" aria-hidden="true">Phone assistant</span><span><i class="dot soon"></i>In progress</span></div>
       <h3 class="chunk">Hush</h3>
-      <p class="what"><span class="blur" aria-hidden="true">An AI receptionist that answers the phone for pest control companies.</span></p>
+      <div class="building" role="img" aria-label="Still being built">
+        <i></i><i></i><i></i>
+      </div>
+      <div class="buildfoot"><span class="pulse"></span>Being built</div>
     </div>
   </div>
 
