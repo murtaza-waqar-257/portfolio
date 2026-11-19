@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Mohammad Murtaza Waqar</title>
-<meta name="description" content="Mohammad Murtaza Waqar. A student who builds tools that real businesses and people use.">
+<title>murtaza</title>
+<meta name="description" content="murtaza. A student developer building software for real businesses and people.">
 <meta name="theme-color" content="#3a4a30">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..900&display=swap" rel="stylesheet">
@@ -12,7 +12,8 @@
   /* Like a tube on a bathroom shelf: warm olive green, cream labels, chunky type, soft corners. */
   :root{--green:#3a4a30;--green-2:#4b5e3d;--green-3:#2f3c27;--cream:#f2ecdd;--paper:#faf6ec;--ink:#2a2a22;--muted:#6f6b5c;--rule:#d8cfba;--amber:#b06f2c;--r:14px}
   *{box-sizing:border-box;margin:0;padding:0}
-  html{-webkit-text-size-adjust:100%}
+  html{-webkit-text-size-adjust:100%;overflow-x:clip}
+  body{overflow-x:clip}
   body{background:var(--cream);color:var(--ink);font:500 16px/1.5 Archivo,"Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased}
   ::selection{background:var(--green);color:var(--cream)}
   a{color:inherit}
@@ -28,9 +29,9 @@
   .front{background:var(--green);color:var(--cream);border-radius:var(--r);padding:26px 24px 22px;display:grid;gap:44px;min-height:min(78vh,640px);grid-template-rows:auto 1fr auto}
   @media (max-width:819px){.front{min-height:0;gap:64px}}
   .front .line{display:flex;justify-content:space-between;font-size:13.5px;color:#c9cdb4;border-bottom:1.5px solid rgba(242,236,221,.25);padding-bottom:12px}
-  .front h1{align-self:end;font-size:clamp(56px,14.5vw,150px)}
+  .front h1{align-self:end;font-size:clamp(60px,17vw,170px);max-width:100%}
   .front h1 span{display:block}
-  .front .foot{display:grid;grid-template-columns:1fr auto;gap:18px;align-items:end;border-top:1.5px solid rgba(242,236,221,.25);padding-top:14px}
+  .front .foot{display:grid;grid-template-columns:1fr;gap:18px;align-items:end;border-top:1.5px solid rgba(242,236,221,.25);padding-top:14px}
   .front .foot p{max-width:26em;font-size:16px;line-height:1.45;color:#e6e2cf}
   .front .seal{width:74px;height:74px;border-radius:50%;border:1.5px solid var(--cream);display:grid;place-items:center;text-align:center;font-size:11px;line-height:1.15;font-weight:700;transform:rotate(-8deg)}
   .front .seal b{display:block;font-size:20px;font-weight:850;font-variation-settings:"wdth" 118}
@@ -91,70 +92,68 @@
   <header class="top"><b>M.W.</b><nav><a href="#work">Work</a><a href="about.html">Contact</a></nav></header>
 
   <section class="front" aria-label="Introduction">
-    <div class="line"><span id="hello">Good evening.</span><span>Student and builder</span></div>
-    <h1 class="chunk"><span>Mohammad</span><span>Murtaza</span><span>Waqar.</span></h1>
+    <div class="line"><span id="hello">Good evening.</span><span>Student developer</span></div>
+    <h1 class="chunk">murtaza.</h1>
     <div class="foot">
-      <p>I build tools that real businesses and people use. I use AI to help me write the code, and I test and fix each tool myself.</p>
-      <div class="seal" aria-hidden="true"><span><b>4</b>tools made</span></div>
+      <p>I build software for real businesses and people. I use AI to help me write the code, and I test and fix every tool myself.</p>
     </div>
   </section>
 
-  <div class="shelf-title" id="work"><h2 class="chunk">The shelf.</h2><span>Tap one to open it</span></div>
+  <div class="shelf-title" id="work"><h2 class="chunk">Selected work</h2><span>4 projects</span></div>
   <div class="shelf">
     <a class="label" href="https://pore-omega.vercel.app" target="_blank" rel="noopener">
       <div class="kind"><span>Ingredient checker</span><span><i class="dot"></i>Live</span></div>
       <h3 class="chunk">pore</h3>
-      <p class="what">Scan, photograph or type a skincare or makeup product. See which ingredients may clog pores, colour-coded at a glance.</p>
+      <p class="what">A web app that checks skincare and makeup ingredients for pore-clogging risk, from a barcode, a photo or a typed list.</p>
       <dl>
-        <div><dt>Suited to</dt><dd>Anyone choosing skincare or makeup</dd></div>
-        <div><dt>Made with</dt><dd>JavaScript, Vercel, Claude, Open Beauty Facts</dd></div>
-        <div><dt>Price</dt><dd>Free. No ads, no sign-up</dd></div>
+        <div><dt>Built with</dt><dd>JavaScript, Vercel, Claude API, Open Beauty Facts</dd></div>
+        <div><dt>Role</dt><dd>Design, development and research</dd></div>
       </dl>
-      <span class="open">Open pore <i>↗</i></span>
+      <span class="open">View live site <i>↗</i></span>
     </a>
 
     <a class="label green" href="driver-bot.html">
       <div class="kind"><span>Fleet assistant</span><span><i class="dot"></i>Tested</span></div>
       <h3 class="chunk">Driverbot</h3>
-      <p class="what">A WhatsApp assistant that handles the daily vehicle checks for delivery van fleets. Drivers don't need a new app.</p>
+      <p class="what">A WhatsApp assistant that runs daily vehicle checks for delivery van fleets, with no new app for drivers.</p>
       <dl>
-        <div><dt>Suited to</dt><dd>Delivery companies with van fleets</dd></div>
-        <div><dt>Made with</dt><dd>Python, Flask, Claude, WhatsApp, Geotab, Supabase</dd></div>
+        <div><dt>Built with</dt><dd>Python, Flask, Claude API, WhatsApp Cloud API, Geotab, Supabase</dd></div>
+        <div><dt>Role</dt><dd>Design and development</dd></div>
       </dl>
-      <span class="open">See the full page <i>→</i></span>
+      <span class="open">Read the case study <i>→</i></span>
     </a>
 
     <a class="label green" href="https://waqarmmurtaza-dev.github.io/hiway-keychain/" target="_blank" rel="noopener">
       <div class="kind"><span>3D printing tool</span><span><i class="dot"></i>Live</span></div>
       <h3 class="chunk">Targa</h3>
-      <p class="what">Makes 3D-printable number plate keychains in your browser. Type an Italian plate and send the file to a 3D printer.</p>
+      <p class="what">A browser tool that turns an Italian number plate into a 3D-printable keychain file.</p>
       <dl>
-        <div><dt>Made with</dt><dd>JavaScript, Three.js, 3MF</dd></div>
+        <div><dt>Built with</dt><dd>JavaScript, Three.js, 3MF</dd></div>
+        <div><dt>Role</dt><dd>Design and development</dd></div>
       </dl>
-      <span class="open">Make a keychain <i>↗</i></span>
+      <span class="open">View live site <i>↗</i></span>
     </a>
 
     <div class="label">
       <div class="kind"><span>Phone assistant</span><span><i class="dot soon"></i>In progress</span></div>
       <h3 class="chunk">Hush</h3>
       <p class="what"><span class="blur" aria-hidden="true">An AI receptionist that answers the phone for pest control companies.</span></p>
-      <dl><div><dt>Ready</dt><dd>Soon</dd></div></dl>
     </div>
   </div>
 
   <section class="back">
-    <h2 class="chunk">How I make them.</h2>
+    <h2 class="chunk">Approach</h2>
     <ol>
-      <li>Find a real problem someone has, often a business I know.</li>
-      <li>Build the smallest version that works, with AI helping me write the code.</li>
-      <li>Test it myself, fix what breaks, and keep it simple.</li>
+      <li>Start from a real problem, usually for a business I know.</li>
+      <li>Ship the smallest version that works, using AI to speed up the code.</li>
+      <li>Test it properly, fix what breaks and keep it simple.</li>
     </ol>
   </section>
 
   <section class="contact">
-    <h2 class="chunk">Say hello.</h2>
-    <p>Got an idea, a job or a question? Send me a note.</p>
-    <div class="row"><a class="pill" href="about.html">Write to me →</a><a class="pill ghost" href="https://github.com/murtaza-waqar-257" target="_blank" rel="noopener">GitHub</a></div>
+    <h2 class="chunk">Get in touch.</h2>
+    <p>Have a project, a role or a question? I'd like to hear about it.</p>
+    <div class="row"><a class="pill" href="about.html">Contact me →</a><a class="pill ghost" href="https://github.com/murtaza-waqar-257" target="_blank" rel="noopener">GitHub</a></div>
   </section>
 
   <footer><span>made by murtaza.</span><span>2026</span></footer>
