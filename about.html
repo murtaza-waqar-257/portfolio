@@ -141,6 +141,7 @@
   .landed h2{font-weight:850!important;font-variation-settings:"wdth" 118;letter-spacing:-.03em;color:var(--green)}
   svg.trail path{stroke:var(--green)}
   footer{border-top:1.5px solid var(--line);padding-top:18px;font-size:13px;letter-spacing:.04em;color:var(--mute)}
+  [hidden]{display:none!important}
 </style>
 </head>
 <body>
@@ -157,6 +158,7 @@
       <label><textarea id="note" aria-label="Your note" maxlength="600" placeholder="I have an idea…"></textarea></label>
       <label class="from"><span>From,</span><input id="name" maxlength="40" placeholder="your name"></label>
       <label class="from"><span>Reply to</span><input id="reply" maxlength="80" placeholder="email or phone"></label>
+      <input type="checkbox" id="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none">
       <p class="err" id="err"></p>
       <button class="fold-btn" type="submit">Fold it into a plane</button>
     </form>
@@ -175,9 +177,8 @@
       
       <h2 class="serif">Nice throw, <span id="who">friend</span>.</h2>
       <p class="mute count" id="count"></p>
-      <p style="margin-top:18px">Your plane is in the air. Send it to my inbox so I can catch it.</p>
-      <div class="btns">
-        <a class="btn" id="mail" href="#">Land it in my inbox</a>
+      <p style="margin-top:18px" id="status">Your plane is on its way to my inbox…</p>
+      <div class="btns" id="fallback" hidden>
         <button class="btn ghost" id="copy">Copy the note</button>
       </div>
       <p class="addr mute" id="addr"></p>
@@ -189,11 +190,22 @@
 </div>
 
 <script>
-  // Put your email address here to switch on the "Land it in my inbox" button.
-  const EMAIL = '';
+  // Notes are delivered to my inbox by Web3Forms (web3forms.com). This key only lets
+  // people send notes to me; it can't read anything, so it's fine in a public page.
+  const WEB3FORMS_KEY = '';
 
   const $ = id => document.getElementById(id);
-  let text = '', name = '';
+  let text = '', name = '', sending = null;
+
+  function send(note, from, reply) {
+    if (!WEB3FORMS_KEY) return Promise.resolve(false);
+    if ($('botcheck').checked) return Promise.resolve(true); // a bot filled the hidden box: pretend it worked
+    return fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify({ access_key: WEB3FORMS_KEY, subject: 'A paper plane from ' + from, from_name: from, reply_to: reply, message: note, botcheck: false })
+    }).then(r => r.json()).then(d => !!d.success).catch(() => false);
+  }
 
   $('sheet').addEventListener('submit', e => {
     e.preventDefault();
@@ -203,6 +215,7 @@
     if (!reply) return $('err').textContent = 'Tell me how I can reply.';
     $('err').textContent = '';
     text = `Dear Murtaza,\n\n${note}\n\nFrom, ${name}\nReply to: ${reply}`;
+    sending = send(note, name, reply); // starts while the plane folds and flies
     $('sheet').classList.add('folding');
     setTimeout(() => { $('sheet').style.display = 'none'; $('zone').classList.add('on'); }, 950);
   });
@@ -270,14 +283,15 @@
     let n = 1; try { n = (+localStorage.getItem('planes') || 0) + 1; localStorage.setItem('planes', n); } catch (e) {}
     $('who').textContent = name.split(' ')[0] || 'friend';
     $('count').textContent = n === 1 ? 'Your first plane.' : `Plane number ${n} from you. You are a pilot now.`;
-    if (EMAIL) {
-      $('mail').href = 'mailto:' + EMAIL + '?subject=' + encodeURIComponent('A paper plane from ' + name) + '&body=' + encodeURIComponent(text);
-      $('addr').textContent = 'If the button does not open your email app, send the note to ' + EMAIL + '.';
-    } else {
-      $('mail').style.display = 'none';
-      $('addr').innerHTML = 'Copy the note and send it to me on <a href="https://github.com/murtaza-waqar-257" target="_blank" rel="noopener" style="border-bottom:1px solid var(--line)">GitHub ↗</a>.';
-    }
+    $('status').textContent = 'Your plane is on its way to my inbox…';
+    $('fallback').hidden = true; $('addr').textContent = '';
     $('landed').classList.add('on');
+    (sending || Promise.resolve(false)).then(ok => {
+      if (ok) { $('status').textContent = 'It landed in my inbox. I\'ll reply soon.'; return; }
+      $('status').textContent = 'The plane didn\'t make it to my inbox.';
+      $('fallback').hidden = false;
+      $('addr').innerHTML = 'Copy the note and send it to me on <a href="https://github.com/murtaza-waqar-257" target="_blank" rel="noopener" style="border-bottom:1px solid var(--line)">GitHub ↗</a>.';
+    });
   }
 
   $('copy').onclick = async () => {
