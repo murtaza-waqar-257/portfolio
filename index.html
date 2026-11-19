@@ -26,10 +26,10 @@
   .top nav a{text-decoration:none;color:var(--muted)}.top nav a:hover{color:var(--green)}
 
   /* The front of the tube */
-  .front{background:var(--green);color:var(--cream);border-radius:var(--r);padding:26px 24px 22px;display:grid;gap:44px;min-height:min(78vh,640px);grid-template-rows:auto 1fr auto}
+  .front{grid-template-columns:minmax(0,1fr);background:var(--green);color:var(--cream);border-radius:var(--r);padding:26px 24px 22px;display:grid;gap:44px;min-height:min(78vh,640px);grid-template-rows:auto 1fr auto}
   @media (max-width:819px){.front{min-height:0;gap:64px}}
   .front .line{display:flex;justify-content:space-between;font-size:13.5px;color:#c9cdb4;border-bottom:1.5px solid rgba(242,236,221,.25);padding-bottom:12px}
-  .front h1{align-self:end;font-size:clamp(60px,17vw,170px);max-width:100%}
+  .front h1{align-self:end;font-size:clamp(56px,15vw,160px);max-width:100%}
   .front h1 span{display:block}
   .front .foot{display:grid;grid-template-columns:1fr;gap:18px;align-items:end;border-top:1.5px solid rgba(242,236,221,.25);padding-top:14px}
   .front .foot p{max-width:26em;font-size:16px;line-height:1.45;color:#e6e2cf}
@@ -92,7 +92,7 @@
   <header class="top"><b>M.W.</b><nav><a href="#work">Work</a><a href="about.html">Contact</a></nav></header>
 
   <section class="front" aria-label="Introduction">
-    <div class="line"><span id="hello">Good evening.</span><span>Student developer</span></div>
+    <div class="line"><span id="hello">Good evening.</span></div>
     <h1 class="chunk">murtaza.</h1>
     <div class="foot">
       <p>I build software for real businesses and people. I use AI to help me write the code, and I test and fix every tool myself.</p>
@@ -156,7 +156,7 @@
     <div class="row"><a class="pill" href="about.html">Contact me →</a><a class="pill ghost" href="https://github.com/murtaza-waqar-257" target="_blank" rel="noopener">GitHub</a></div>
   </section>
 
-  <footer><span>made by murtaza.</span><span>2026</span></footer>
+  <footer><span>made by murtaza.</span></footer>
 </div>
 <script>
   const h=new Date().getHours();
