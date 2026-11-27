@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Murtaza</title>
+<meta name="description" content="Murtaza. I build small, useful software for real businesses and people.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#fcfcfc;--text:#171717;--muted:#6f6f6f;--faint:#a3a3a3;--line:#ececec;--hover:#f3f3f3;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{--bg:#111;--text:#ededed;--muted:#a1a1a1;--faint:#666;--line:#222;--hover:#1a1a1a}
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font:400 15px/1.65 Inter,system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased}
+  main{max-width:560px;margin:0 auto;padding:96px 24px 80px}
+  a{color:inherit;text-decoration:none}
+  ::selection{background:var(--text);color:var(--bg)}
+
+  /* gentle staggered fade in */
+  .in{opacity:0;transform:translateY(6px);animation:in .6s cubic-bezier(.2,.7,.2,1) forwards}
+  @keyframes in{to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion:reduce){.in{animation:none;opacity:1;transform:none}}
+
+  h1{font-size:15px;font-weight:500}
+  .sub{color:var(--muted)}
+  .intro{margin-top:28px;color:var(--muted);max-width:44ch}
+  .intro b{color:var(--text);font-weight:500}
+
+  h2{font-size:15px;font-weight:500;margin:56px 0 12px}
+
+  ul{list-style:none}
+  .item{display:grid;grid-template-columns:1fr auto;gap:2px 16px;margin:0 -12px;padding:10px 12px;border-radius:10px;transition:background .2s ease}
+  a.item:hover{background:var(--hover)}
+  .item .name{font-weight:500}
+  .item .desc{grid-column:1/-1;color:var(--muted)}
+  .item .meta{color:var(--faint);font-size:13px;align-self:center;display:flex;align-items:center;gap:6px}
+  .item .arrow{display:inline-block;transition:transform .2s ease}
+  a.item:hover .arrow{transform:translate(2px,-2px)}
+  .live{width:6px;height:6px;border-radius:50%;background:#3fb950;box-shadow:0 0 0 3px rgba(63,185,80,.15)}
+  .wip{width:6px;height:6px;border-radius:50%;border:1px solid var(--faint)}
+
+  .links{display:flex;flex-wrap:wrap;gap:6px 20px}
+  .links a{color:var(--muted);background-image:linear-gradient(var(--text),var(--text));background-size:0 1px;background-position:0 100%;background-repeat:no-repeat;transition:background-size .25s ease,color .2s}
+  .links a:hover{color:var(--text);background-size:100% 1px}
+
+  footer{margin-top:72px;color:var(--faint);font-size:13px}
+  :focus-visible{outline:2px solid var(--text);outline-offset:3px;border-radius:6px}
+</style>
+</head>
+<body>
+<main>
+  <header class="in">
+    <h1>Murtaza</h1>
+    <p class="sub">Developer in Manchester</p>
+  </header>
+
+  <p class="intro in" style="animation-delay:.08s">I build small, useful software for <b>real businesses and people</b>. I use AI to help me write the code, and I test and fix every tool myself.</p>
+
+  <section class="in" style="animation-delay:.16s">
+    <h2>Projects</h2>
+    <ul>
+      <li><a class="item" href="https://pore-omega.vercel.app" target="_blank" rel="noopener">
+        <span class="name">pore</span><span class="meta"><i class="live"></i>Live <span class="arrow">↗</span></span>
+        <span class="desc">Checks skincare and makeup ingredients for pore-clogging risk</span>
+      </a></li>
+      <li><a class="item" href="driver-bot.html">
+        <span class="name">Driverbot</span><span class="meta">Case study <span class="arrow">→</span></span>
+        <span class="desc">An AI assistant that watches delivery vans and alerts the team</span>
+      </a></li>
+      <li><a class="item" href="https://waqarmmurtaza-dev.github.io/hiway-keychain/" target="_blank" rel="noopener">
+        <span class="name">Targa</span><span class="meta"><i class="live"></i>Live <span class="arrow">↗</span></span>
+        <span class="desc">Turns an Italian number plate into a 3D-printable keychain</span>
+      </a></li>
+      <li><div class="item">
+        <span class="name">Newsbot</span><span class="meta"><i class="live"></i>Daily</span>
+        <span class="desc">A calm news digest on Telegram, a few big stories every morning</span>
+      </div></li>
+      <li><div class="item">
+        <span class="name">Hush</span><span class="meta"><i class="wip"></i>Building</span>
+        <span class="desc">Something for small service businesses</span>
+      </div></li>
+    </ul>
+  </section>
+
+  <section class="in" style="animation-delay:.24s">
+    <h2>Elsewhere</h2>
+    <div class="links">
+      <a href="mailto:murtaza@waqar.co">Email</a>
+      <a href="https://github.com/murtaza-waqar-257" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://www.linkedin.com/in/mmurtazawaqar" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+  </section>
+
+  <footer class="in" style="animation-delay:.32s">© murtaza</footer>
+</main>
+</body>
+</html>
