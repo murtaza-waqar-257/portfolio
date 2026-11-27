@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Newsbot · Murtaza</title>
+<meta name="description" content="Newsbot. A calm daily news digest on Telegram, built by Murtaza.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#fcfcfc;--text:#171717;--muted:#6f6f6f;--faint:#a3a3a3;--line:#ececec;--hover:#f3f3f3;--card:#fff;--bubble:#eef6ff}
+  @media (prefers-color-scheme:dark){
+    :root{--bg:#111;--text:#ededed;--muted:#a1a1a1;--faint:#666;--line:#222;--hover:#1a1a1a;--card:#161616;--bubble:#1b2633}
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font:400 15px/1.65 Inter,system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased}
+  main{max-width:560px;margin:0 auto;padding:96px 24px 80px}
+  a{color:inherit;text-decoration:none}
+  ::selection{background:var(--text);color:var(--bg)}
+  .in{opacity:0;transform:translateY(6px);animation:in .6s cubic-bezier(.2,.7,.2,1) forwards}
+  @keyframes in{to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion:reduce){.in{animation:none;opacity:1;transform:none}}
+
+  .back{color:var(--muted);display:inline-flex;gap:6px;transition:color .2s}
+  .back span{display:inline-block;transition:transform .2s}
+  .back:hover{color:var(--text)}.back:hover span{transform:translateX(-2px)}
+
+  h1{font-size:15px;font-weight:500;margin-top:40px}
+  .sub{color:var(--muted)}
+  p{color:var(--muted);margin-top:16px;max-width:46ch}
+  h2{font-size:15px;font-weight:500;margin:52px 0 12px}
+
+  /* example Telegram message */
+  .chat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
+  .chat .who{font-size:13px;color:var(--faint);margin-bottom:10px;display:flex;justify-content:space-between}
+  .bubble{background:var(--bubble);border-radius:12px 12px 12px 4px;padding:12px 14px;font-size:14px;line-height:1.55}
+  .bubble b{font-weight:500}
+  .bubble div+div{margin-top:8px}
+  .bubble .read{color:#2f81f7}
+  .note{font-size:13px;color:var(--faint);margin-top:8px}
+
+  ol{list-style:none;counter-reset:s}
+  ol li{display:grid;grid-template-columns:28px 1fr;padding:10px 0;border-top:1px solid var(--line);color:var(--muted)}
+  ol li:first-child{border-top:0}
+  ol li:before{counter-increment:s;content:counter(s);color:var(--faint)}
+  ol li b{color:var(--text);font-weight:500}
+
+  .stack{display:flex;flex-wrap:wrap;gap:8px}
+  .stack span{font-size:13px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:3px 10px}
+
+  footer{margin-top:72px;color:var(--faint);font-size:13px}
+  :focus-visible{outline:2px solid var(--text);outline-offset:3px;border-radius:6px}
+</style>
+</head>
+<body>
+<main>
+  <a class="back in" href="minimal.html"><span>←</span> Murtaza</a>
+
+  <section class="in" style="animation-delay:.06s">
+    <h1>Newsbot</h1>
+    <p class="sub" style="margin-top:0">Personal tool, running daily</p>
+    <p>Most news apps are built to keep you scrolling. I wanted the opposite. Newsbot sends me one short message every morning with only the big stories on topics I care about, then stops. No feed, no notifications all day.</p>
+  </section>
+
+  <section class="in" style="animation-delay:.14s">
+    <h2>What arrives each morning</h2>
+    <div class="chat">
+      <div class="who"><span>newsbot</span><span>08:00</span></div>
+      <div class="bubble">
+        <div><b>Today's big news</b></div>
+        <div><b>Ferrari</b> revealed a new limited-edition model at its launch event. <span class="read">read</span></div>
+        <div><b>Claude AI</b> Anthropic released a new version of Claude. <span class="read">read</span></div>
+        <div><b>Apple</b> announced a new product ahead of the holidays. <span class="read">read</span></div>
+      </div>
+    </div>
+    <p class="note">An illustrative example. On quiet days it just says nothing big happened.</p>
+  </section>
+
+  <section class="in" style="animation-delay:.22s">
+    <h2>How it works</h2>
+    <ol>
+      <li><span><b>Collects</b> the last day's headlines for each topic I follow</span></li>
+      <li><span><b>Filters</b> them with Claude, which keeps only real, big news and drops rumours, reviews and repeats</span></li>
+      <li><span><b>Writes</b> one plain sentence per story, at most seven a day</span></li>
+      <li><span><b>Sends</b> the digest to Telegram and remembers what it already sent</span></li>
+      <li><span><b>Runs itself</b> every morning on GitHub Actions, so my laptop can stay off</span></li>
+    </ol>
+  </section>
+
+  <section class="in" style="animation-delay:.3s">
+    <h2>Built with</h2>
+    <div class="stack"><span>Python</span><span>Claude API</span><span>Telegram Bot API</span><span>Google News RSS</span><span>GitHub Actions</span></div>
+  </section>
+
+  <footer class="in" style="animation-delay:.38s">© murtaza</footer>
+</main>
+</body>
+</html>
