@@ -62,15 +62,21 @@
     .item .desc{grid-column:2;grid-row:1;align-self:center}
     .item .meta{grid-column:3;grid-row:1}
   }
+
+  /* Name and intro sharpen out of a blur on load */
+  .blurin{opacity:0;filter:blur(8px);animation:blurin .9s cubic-bezier(.2,.7,.2,1) forwards}
+  @keyframes blurin{to{opacity:1;filter:blur(0)}}
+  .copied{color:var(--text)!important}
+  @media (prefers-reduced-motion:reduce){.blurin{animation:none;opacity:1;filter:none}}
 </style>
 </head>
 <body>
 <main>
-  <header class="in">
+  <header class="blurin">
     <h1>Murtaza</h1>
   </header>
 
-  <p class="intro in" style="animation-delay:.08s">I'm Murtaza, a developer in Manchester. I design and build focused AI tools for <b>real problems</b>, from a fleet assistant for a logistics company to apps people use every day.</p>
+  <p class="intro blurin" style="animation-delay:.12s">I'm Murtaza, a developer in Manchester. I design and build focused AI tools for <b>real problems</b>, from a fleet assistant for a logistics company to apps people use every day.</p>
 
   <section class="in" style="animation-delay:.16s">
     <h2>Projects</h2>
@@ -101,7 +107,7 @@
   <section class="in" style="animation-delay:.24s">
     <h2>More</h2>
     <div class="links">
-      <a href="mailto:m@mrtza.me">Email</a>
+      <a href="mailto:m@mrtza.me" id="email">Email</a>
       <a href="https://instagram.com/25sevenn" target="_blank" rel="noopener">Instagram</a>
       <a href="https://x.com/mzztaza" target="_blank" rel="noopener">X (Twitter)</a>
     </div>
@@ -109,5 +115,19 @@
 
   <footer class="in" style="animation-delay:.32s">© murtaza</footer>
 </main>
+<script>
+{
+// Click Email to copy the address
+const em=document.getElementById('email');
+em.addEventListener('click',e=>{
+  if(!navigator.clipboard) return;
+  e.preventDefault();
+  navigator.clipboard.writeText('m@mrtza.me').then(()=>{
+    em.textContent='Copied'; em.classList.add('copied');
+    setTimeout(()=>{em.textContent='Email'; em.classList.remove('copied')},1500);
+  }).catch(()=>{location.href='mailto:m@mrtza.me'});
+});
+}
+</script>
 </body>
 </html>
