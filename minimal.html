@@ -37,11 +37,13 @@
   a.item:hover{background:var(--hover)}
   .item .name{font-weight:500}
   .item .desc{grid-column:1/-1;color:var(--muted)}
-  .item .meta{color:var(--faint);font-size:13px;align-self:center;display:flex;align-items:center;gap:6px}
+  .item .meta{color:var(--faint);font-size:13px;align-self:center;display:grid;grid-template-columns:6px 1fr 12px;align-items:center;gap:8px;width:112px}
+  .item .meta .arrow{justify-self:end}
   .item .arrow{display:inline-block;transition:transform .2s ease}
   a.item:hover .arrow{transform:translate(2px,-2px)}
   .live{width:6px;height:6px;border-radius:50%;background:#3fb950;box-shadow:0 0 0 3px rgba(63,185,80,.15)}
   .wip{width:6px;height:6px;border-radius:50%;border:1px solid var(--faint)}
+  .tested{width:6px;height:6px;border-radius:50%;background:var(--faint)}
 
   .links{display:flex;flex-wrap:wrap;gap:6px 20px}
   .links a{color:var(--muted);background-image:linear-gradient(var(--text),var(--text));background-size:0 1px;background-position:0 100%;background-repeat:no-repeat;transition:background-size .25s ease,color .2s}
@@ -63,30 +65,30 @@
     <h2>Projects</h2>
     <ul>
       <li><a class="item" href="https://pore-omega.vercel.app" target="_blank" rel="noopener">
-        <span class="name">pore</span><span class="meta"><i class="live"></i>Live <span class="arrow">↗</span></span>
+        <span class="name">pore</span><span class="meta"><i class="live"></i>Live<span class="arrow">↗</span></span>
         <span class="desc">Checks skincare and makeup ingredients for pore-clogging risk</span>
       </a></li>
       <li><a class="item" href="driver-bot.html">
-        <span class="name">Driverbot</span><span class="meta">Case study <span class="arrow">→</span></span>
+        <span class="name">Driverbot</span><span class="meta"><i class="tested"></i>Case study<span class="arrow">→</span></span>
         <span class="desc">An AI assistant that watches delivery vans and alerts the team</span>
       </a></li>
       <li><a class="item" href="https://waqarmmurtaza-dev.github.io/hiway-keychain/" target="_blank" rel="noopener">
-        <span class="name">Targa</span><span class="meta"><i class="live"></i>Live <span class="arrow">↗</span></span>
+        <span class="name">Targa</span><span class="meta"><i class="live"></i>Live<span class="arrow">↗</span></span>
         <span class="desc">Turns an Italian number plate into a 3D-printable keychain</span>
       </a></li>
       <li><a class="item" href="newsbot.html">
-        <span class="name">Newsbot</span><span class="meta"><i class="live"></i>Daily <span class="arrow">→</span></span>
+        <span class="name">Newsbot</span><span class="meta"><i class="live"></i>Daily<span class="arrow">→</span></span>
         <span class="desc">A calm news digest on Telegram, a few big stories every morning</span>
       </a></li>
       <li><div class="item">
-        <span class="name">Hush</span><span class="meta"><i class="wip"></i>Building</span>
+        <span class="name">Hush</span><span class="meta"><i class="wip"></i>Building<span></span></span>
         <span class="desc">Something for small service businesses</span>
       </div></li>
     </ul>
   </section>
 
   <section class="in" style="animation-delay:.24s">
-    <h2>Elsewhere</h2>
+    <h2>More</h2>
     <div class="links">
       <a href="mailto:murtaza@waqar.co">Email</a>
       <a href="https://github.com/murtaza-waqar-257" target="_blank" rel="noopener">GitHub</a>
